@@ -1,0 +1,7 @@
+.site-wrap {
+  &:where([data-is-sticky]) {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-block-size: 100svb;
+  }
+}

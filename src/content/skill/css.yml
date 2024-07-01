@@ -1,0 +1,4 @@
+lv: '70%'
+screenReaderText: 'CSSの習熟度70%'
+description: 'CSS設計に求められる大切なことは、再利用性ではなく捨てやすさだと考えています。モダンなCSSについては、積極的に利用する方針です。'
+order: 2

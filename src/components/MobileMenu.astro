@@ -1,0 +1,14 @@
+---
+import Modal from './Modal/Modal.astro'
+import MainNavigation from './MainNavigation.astro'
+---
+
+<!-- transition:persistを付けてはいけない -->
+<Modal
+  id="mobile-menu"
+  data-modal-id="mobile-menu"
+  aria-label="モバイルメニュー"
+  autofocus
+>
+  <MainNavigation class="mobile-menu-nav" />
+</Modal>

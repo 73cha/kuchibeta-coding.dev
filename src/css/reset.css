@@ -1,0 +1,19 @@
+:where(*, ::before, ::after) {
+  min-inline-size: 0;
+  padding-block: 0;
+  padding-inline: 0;
+  margin-block: 0;
+  margin-inline: 0;
+}
+
+:where(dialog) {
+  width: unset;
+  max-width: unset;
+  height: unset;
+  max-height: unset;
+  padding: unset;
+  overflow: unset;
+  color: unset;
+  background-color: unset;
+  border: unset;
+}

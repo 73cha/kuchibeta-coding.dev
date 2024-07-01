@@ -1,0 +1,58 @@
+---
+import Section from '../../Section.astro'
+---
+
+<Section id="intro" data-is="intro">
+  <h2>自己紹介</h2>
+  <Fragment slot="content">
+    <div class="intro-name">
+      <ruby>浪崎<rt>なみざき</rt></ruby>
+      <ruby>勝久<rt>かつひさ</rt></ruby>
+    </div>
+    <p class="intro-position">マークアップエンジニア</p>
+    <div class="intro-text-wrap">
+      <p>
+        ゲーム好きのマークアップエンジニアです。リモートワークを支える技術が発達し、時間や場所の制約に囚われず、様々な場所や時間にいる人々とコラボレーション出来る時代という想いから、2016年よりフリーランスとして活動しています。
+      </p>
+      <p>
+        マークアップやCSSの経験が豊富で、デザイナー寄りのスキルセットを持っています。肩書きとしては「フロントエンド・デザイナー」が近いですが、実際にはマークアップやCSSを使ってデザインを実現する役割です。
+      </p>
+      <p>
+        Web標準、アクセシビリティ、パフォーマンスを重視した制作で、プロジェクトをサポートします。
+      </p>
+      <p>
+        2017年に屋久島町へ移住しました。母が屋久島出身で、生家が空き家となっていたため、興味を持ち移住を決めました。
+      </p>
+      <p>
+        今後はスキルをさらに磨き、より複雑で規模の大きなプロジェクトに参加したいと考えています。特にアクセシビリティやパフォーマンスの最適化に注力していきます。
+      </p>
+    </div>
+  </Fragment>
+</Section>
+
+<style>
+  .intro-name {
+    --clamp-min: 18;
+    --clamp-max: 20;
+
+    text-align: center;
+  }
+
+  .intro-name :where(rt) {
+    --clamp-min: 10;
+    --clamp-max: 12;
+  }
+
+  .intro-position {
+    --clamp-min: 12;
+    --clamp-max: 14;
+
+    margin-block-start: 0;
+    color: var(--font-color-muted);
+    text-align: center;
+  }
+
+  .intro-text-wrap :where(p) {
+    margin-block-start: 1rem;
+  }
+</style>

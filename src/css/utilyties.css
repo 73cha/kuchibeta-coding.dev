@@ -1,0 +1,31 @@
+.u-visualy-hidden {
+  position: fixed !important;
+  inset: 0 !important;
+  display: block !important;
+  inline-size: 4px !important;
+  block-size: 4px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  pointer-events: none !important;
+  visibility: visible !important;
+  border: none !important;
+  opacity: 0 !important;
+  contain: strict !important;
+}
+
+.u-grid-background-img {
+  background-image: linear-gradient(
+      0deg,
+      transparent calc(100% - 1px),
+      var(--hero-grid-color) calc(100% - 1px)
+    ),
+    linear-gradient(
+      90deg,
+      transparent calc(100% - 1px),
+      var(--hero-grid-color) calc(100% - 1px)
+    );
+  background-repeat: repeat;
+  background-position: center center;
+  background-size: 1rem 1rem;
+}
+

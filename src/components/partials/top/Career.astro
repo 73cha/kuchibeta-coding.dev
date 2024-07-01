@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content'
+
+import Section from '../../Section.astro'
+import CareerItem from './CareerItem.astro'
+
+const careerCollection = await getCollection('career')
+const carrers = careerCollection.sort((a, b) =>
+  a.data.period.start < b.data.period.start ? -1 : 1
+)
+---
+
+<Section id="career">
+  <h2>経歴</h2>
+  <Fragment slot="content">
+    <div class="career-inner">
+      {carrers.map((career) => <CareerItem career={career} />)}
+    </div>
+  </Fragment>
+</Section>
+
+<style>
+  .career-inner {
+    background-image: linear-gradient(
+      to bottom,
+      transparent 0 11px,
+      var(--timeline-line-color) 11px 100%
+    );
+    background-repeat: repeat-y;
+    background-position-x: 6px;
+    background-size: 1px 100%;
+  }
+</style>

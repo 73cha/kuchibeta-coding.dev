@@ -1,0 +1,28 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+type Props = HTMLAttributes<'section'>
+
+const { ...attrs } = Astro.props
+---
+
+<!--
+  記事内でも再利用したいため、h2見出しはデフォルトスロットにする
+  見出しから目次を生成するには、メタ文字がエスケープされない、デフォルトスロットである必要がある
+-->
+<section class="section" {...attrs}>
+  <slot />
+  <div class="section-inner">
+    <slot name="content" />
+  </div>
+</section>
+
+<style>
+  .section:where([data-no-gutter]) :where(.section-inner) {
+    padding: unset;
+  }
+
+  .section-inner {
+    padding: 2rem;
+  }
+</style>

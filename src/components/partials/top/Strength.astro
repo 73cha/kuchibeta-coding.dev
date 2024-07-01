@@ -1,0 +1,89 @@
+---
+import Section from '../../Section.astro'
+import Icon from '../../Icon.astro'
+---
+
+<Section id="strength" data-is="strength" data-no-gutter>
+  <h2>強み</h2>
+  <Fragment slot="content">
+    <ul class="strength-list">
+      <li class="strength-listitem">
+        <section class="strength-item">
+          <h3>
+            <Icon name="code" size={32} />
+            コード品質
+          </h3>
+          <p>
+            一人称でマークアップからフレームワークでの実装を完結できるため、一貫性、堅牢性の高いコードを提供します。
+          </p>
+        </section>
+        <li class="strength-listitem">
+          <section class="strength-item">
+            <h3>
+              <Icon name="a11y" size={32} />
+              アクセシビリティ
+            </h3>
+            <p>
+              多くの人がウェブサイトを利用できるように、最大限アクセシビリティに配慮したコーディングをします。
+            </p>
+          </section>
+        </li>
+        <li class="strength-listitem">
+          <section class="strength-item">
+            <h3>
+              <Icon name="jamstack" size={32} />
+              Jamstack
+            </h3>
+            <p>
+              Jamstackでのウェブサイト制作が可能です。microCMSを利用した実績があり、Astroを使って静的生成します。
+            </p>
+          </section>
+        </li>
+        <li class="strength-listitem">
+          <section class="strength-item">
+            <h3>
+              <Icon name="guage" size={32} />
+              パフォーマンス
+            </h3>
+            <p>
+              Core Web
+              Vitalsの指標を中心にした、パフォーマンスの最適化に積極的に取り組みます。
+            </p>
+          </section>
+        </li>
+      </li>
+    </ul>
+  </Fragment>
+
+  <style>
+    .strength-list {
+      display: block grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(275px, 100%), 1fr));
+      margin-block-end: -1px;
+      margin-inline-end: -1px;
+    }
+
+    .strength-listitem {
+      padding: 2rem;
+      border-block-end: var(--border-style);
+      border-inline-end: var(--border-style);
+
+      @container main (inline-size <= 548px) {
+        border-inline-end: unset;
+      }
+    }
+
+    .strength-item :where(h3) {
+      display: block flex;
+      gap: 0 0.5rem;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .strength-item :where(p) {
+      --clamp-max: 14;
+
+      margin-block-start: 1rem;
+    }
+  </style>
+</Section>

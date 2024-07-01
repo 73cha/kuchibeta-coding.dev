@@ -1,0 +1,47 @@
+---
+import type { DataEntryMap } from 'astro:content'
+import { getEntries } from 'astro:content'
+
+type Props = {
+  tags:
+    | { collection: 'tag'; id: keyof DataEntryMap['tag'] }[]
+    | undefined
+    | null
+}
+
+const { tags } = Astro.props
+
+if (!tags) return
+
+const relatedTags = await getEntries(tags)
+---
+
+<ul class="taglist" aria-label="投稿のタグ">
+  {
+    relatedTags.map((tag) => (
+      <li class="taglist-listitem">
+        <span class="u-visualy-hidden">タグ名</span>
+        {tag.data.name}
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .taglist {
+    --clamp-min: 12;
+    --clamp-max: 12;
+
+    display: block flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .taglist-listitem {
+    padding: 0.25rem 1rem;
+    background-color: var(--tag-background-color);
+    border: var(--border-style);
+    border-radius: 100vmax;
+  }
+</style>

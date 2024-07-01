@@ -1,0 +1,171 @@
+---
+import { Image } from 'astro:assets'
+import { type CollectionEntry } from 'astro:content'
+
+import Icon from '../../Icon.astro'
+
+interface Props {
+  result: CollectionEntry<'result'>
+}
+
+const { result } = Astro.props
+const { data, render } = result
+const { subject, subtitle, thumb, period, href } = data
+const { Content } = await render()
+
+const formatDate2Kanji = (date: string, when: 'start' | 'end') => {
+  const getDate = new Date(date).getDate()
+
+  if (isNaN(getDate)) return
+
+  const [year, month] = date.split('-')
+
+  switch (when) {
+    case 'start':
+      return `${year}年${month}月`
+    case 'end':
+      return `${month}月`
+  }
+}
+---
+
+<section class="result-item">
+  <hgroup class="result-item-title-wrap">
+    <h3>{subject}</h3>
+    <p>{subtitle}</p>
+  </hgroup>
+
+  <div class="result-item-thumb">
+    <Image
+      src={thumb.src}
+      alt={thumb.alt}
+      width={thumb.width}
+      height={thumb.height}
+      aria-hidden="true"
+    />
+  </div>
+
+  <div class="result-item-meta">
+    <dl class="result-item-priode">
+      <dt>
+        <span class="u-visualy-hidden">期間</span>
+        <Icon name="calendar" size={24} />
+      </dt>
+      <dd>
+        <span class="u-visualy-hidden">
+          {subject}に携わった期間:{period.start}から{period.end}
+        </span>
+        <time datetime={period.start} aria-hidden="true">
+          {formatDate2Kanji(period.start, 'start')}
+        </time>
+        <time datetime={period.end} aria-hidden="true">
+          {formatDate2Kanji(period.end, 'end')}
+        </time>
+      </dd>
+    </dl>
+    <dl class="result-item-external-link">
+      <dt>
+        <span class="u-visualy-hidden">ウェブサイト</span>
+        <Icon name="browsers" size={24} />
+      </dt>
+      <dd>
+        <a href={href} target="_blank">
+          <span class="u-visualy-hidden">
+            {subject}のウェブサイトです。新しいウィンドウで開きます。
+          </span>
+          <span aria-hidden="true">{href}</span>
+        </a>
+      </dd>
+    </dl>
+  </div>
+  <div class="result-item-content">
+    <Content />
+  </div>
+</section>
+
+<style>
+  .result-item-title-wrap {
+    text-align: center;
+  }
+
+  .result-item-title-wrap :where(p) {
+    --clamp-max: 14;
+
+    margin-block-start: unset;
+  }
+
+  .result-item-thumb {
+    aspect-ratio: 16 / 9;
+    margin-block-start: 2rem;
+  }
+
+  .result-item-thumb :where(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  .result-item-meta {
+    --clamp-max: 14;
+
+    display: block grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    margin-block: 1rem 2.5rem;
+
+    @container main (inline-size <= 640px) {
+      margin-block: 1rem;
+    }
+  }
+
+  .result-item-meta :where(svg) {
+    inline-size: 24px;
+    block-size: 24px;
+  }
+
+  :is(.result-item-priode, .result-item-external-link) {
+    display: block flex;
+    place-content: center;
+
+    :where(dt) {
+      margin-inline-end: 0.25rem;
+    }
+  }
+
+  .result-item-priode :where(time + time) {
+    &::before {
+      content: '~';
+      speak: never;
+    }
+  }
+
+  .result-item-external-link {
+    --clamp-max: 14;
+
+    border-inline-start: var(--border-style);
+  }
+
+  .result-item-external-link :where(a) {
+    display: inline flow-root;
+    inline-size: 12em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
+
+    @container (inline-size <= 640px) {
+      inline-size: 8em;
+    }
+  }
+
+  /* `<Content />`内のセレクターなので、ネストしないとセレクターが生成されない */
+  .result-item-content {
+    :where(p + *, ul + *) {
+      margin-block-start: 1rem;
+    }
+
+    :where(ul) {
+      list-style-position: inside;
+      list-style-type: disc;
+    }
+  }
+</style>

@@ -1,0 +1,4 @@
+lv: '50%'
+screenReaderText: 'JavaScriptの習熟度60%'
+description: 'ES2015以降の新しい構文にも対応可能です。TypeScriptについては、経験は浅いですが対応可能です。'
+order: 3

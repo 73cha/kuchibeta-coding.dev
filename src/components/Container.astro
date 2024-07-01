@@ -1,0 +1,35 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+type Props = HTMLAttributes<'div'>
+
+const { ...attrs } = Astro.props
+---
+
+<div class="container" {...attrs}>
+  <slot />
+</div>
+
+<style>
+  .container {
+    --_inline-size: 720px;
+
+    max-inline-size: var(--_inline-size);
+    margin-inline: auto;
+    border-inline-start: var(--border-style);
+    border-inline-end: var(--border-style);
+
+    @container main (width <= 640px) {
+      border-inline-start: unset;
+      border-inline-end: unset;
+    }
+
+    &:where([data-size='medium']) {
+      --_inline-size: 1080px;
+    }
+
+    &:where([data-size='large']) {
+      --_inline-size: 1280px;
+    }
+  }
+</style>

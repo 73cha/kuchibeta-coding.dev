@@ -1,0 +1,139 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+type Props = HTMLAttributes<'header'>
+
+import HamburgerMenu from './HamburgerMenu.astro'
+import MainNavigation from './MainNavigation.astro'
+import ThemeSwitch from './ThemeSwitch/ThemeSwitch.astro'
+
+const { ...attrs } = Astro.props
+const siteNAME = import.meta.env.PUBLIC_SITE_NAME
+---
+
+<header class="global-header" {...attrs}>
+  <div class="global-header-inner">
+    <h1 class="global-header-logo">
+      <a href="/">{siteNAME}</a>
+    </h1>
+    <div class="global-header-nav-wrap">
+      <MainNavigation
+        class="global-nav"
+        aria-label="グローバルナビゲーション"
+      />
+    </div>
+    <div class="global-header-switch-wrap">
+      <ThemeSwitch />
+    </div>
+    <div class="global-header-sp-menu-wrap">
+      <HamburgerMenu />
+    </div>
+  </div>
+</header>
+
+<style>
+  .global-header {
+    position: sticky;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    z-index: var(--z-foward);
+    block-size: var(--header-block-size);
+    padding-inline: 1rem;
+    background-color: var(--header-background-color);
+    border-block-end: solid 1px var(--header-border-color);
+    container: globalheader / inline-size;
+  }
+
+  .global-header-inner {
+    --_inline-size-default: 1280px;
+
+    display: block grid;
+    grid-template-columns: auto 1fr auto;
+    place-content: center;
+    max-inline-size: var(--_inline-size-default);
+    block-size: 100%;
+    margin-inline: auto;
+  }
+
+  .global-header-logo {
+    --clamp-min: 16;
+    --clamp-max: 18;
+    --_ff-marugo: 'Zen Maru Gothic', sans-serif;
+
+    align-self: center;
+    font-family: var(--_ff-marugo);
+    font-feature-settings: 'palt';
+
+    @container globalheader (width <= 940px) {
+      grid-row: 1 / 2;
+      grid-column: 2 / 3;
+      justify-self: center;
+    }
+  }
+
+  .global-header-logo :where(a) {
+    color: var(--header-link-color);
+    text-decoration: unset;
+  }
+
+  .global-header-nav-wrap {
+    --clamp-max: 15;
+
+    place-self: center center;
+
+    @container globalheader (width <= 940px) {
+      display: none;
+    }
+  }
+
+  .global-header-switch-wrap {
+    place-self: center end;
+
+    @container globalheader (width <= 940px) {
+      display: unset;
+      grid-row: 1 / 2;
+      grid-column: 3 / 4;
+    }
+  }
+
+  .global-header-sp-menu-wrap {
+    display: none;
+    align-self: center;
+
+    @container globalheader (width <= 940px) {
+      display: unset;
+      grid-row: 1 / 2;
+      grid-column: 1 / 2;
+    }
+  }
+</style>
+
+<script>
+  const callback = (entries: ResizeObserverEntry[]) => {
+    const entry = entries[0]
+
+    if (entry.borderBoxSize) {
+      const { blockSize } = entry.borderBoxSize[0]
+      const roundedBlockSize = Math.round(blockSize)
+
+      // ViewTranstion利用時、初回以降のナビゲーションで0になってしまう
+      if (roundedBlockSize === 0) return
+
+      document.documentElement.style.setProperty(
+        '--header-block-size',
+        `${roundedBlockSize}px`
+      )
+    }
+  }
+
+  const ovserver = new ResizeObserver(callback)
+
+  export const initializeSetHeaderBlocksize = () => {
+    const header = document.querySelector('.global-header') as HTMLHeadElement
+
+    ovserver.observe(header)
+  }
+
+  document.addEventListener('DOMContentLoaded', initializeSetHeaderBlocksize)
+  document.addEventListener('astro:page-load', initializeSetHeaderBlocksize)
+</script>

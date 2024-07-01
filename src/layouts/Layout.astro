@@ -1,0 +1,118 @@
+---
+import '../css/index.css'
+import MobileMenu from '../components/MobileMenu.astro'
+import GlobalHeader from '../components/GlobalHeader.astro'
+import GlobalFooter from '../components/GlobalFooter.astro'
+import { ViewTransitions } from 'astro:transitions'
+import Seo from '../components/Seo.astro'
+import type { ComponentProps, HTMLAttributes } from 'astro/types'
+
+type Props = ComponentProps<typeof Seo> & HTMLAttributes<'body'>
+type RootName = keyof typeof rootNames
+
+const rootNames = {
+  blog: 'ブログ',
+}
+const siteName = 'くちべたコーディング'
+const { title, description, seo, ...attrs } = Astro.props
+const { pathname } = Astro.url
+
+const titleTemplate = (title: string) => {
+  if (pathname === '/') {
+    return title
+  }
+
+  const paths = pathname.split('/').filter((path) => path)
+  const [root, _sub] = paths
+
+  const rootName = root as RootName
+
+  if (!rootNames[rootName]) {
+    return `${title} | ${siteName}`
+  }
+
+  return `${title} | ${rootNames[rootName]} | ${siteName}`
+}
+---
+
+<!doctype html>
+<html lang="ja">
+  <head prefix="og: http://ogp.me/ns#">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta content={description} name="description" />
+    <meta content="email=no,telephone=no,address=no" name="format-detection" />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="#dce7ef"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="#1c1c1c"
+    />
+    <!-- 
+      `seo`はオプショナルになっているので、渡ってこなければ`Seo`コンポーネントは使われない
+      SEOをしたいページは、`seo`の`props`を`Layout`に渡す
+    -->
+    {seo && <Seo title={title} description={description} seo={seo} />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      fetchpriority="high"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap"
+    />
+    <link
+      rel="preload"
+      as="style"
+      fetchpriority="high"
+      href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-BX4HB2CTDJ"
+      is:inline
+    ></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || []
+      function gtag() {
+        dataLayer.push(arguments)
+      }
+      gtag('js', new Date())
+
+      gtag('config', 'G-BX4HB2CTDJ')
+    </script>
+    <title>{titleTemplate(title)}</title>
+    <ViewTransitions />
+  </head>
+  <body {...attrs}>
+    <div class="site-wrap" {...attrs}>
+      <GlobalHeader />
+      <main>
+        <slot />
+      </main>
+      <GlobalFooter />
+      <MobileMenu />
+    </div>
+  </body>
+</html>

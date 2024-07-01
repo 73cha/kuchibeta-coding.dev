@@ -1,0 +1,204 @@
+:where(*, ::before, ::after) {
+  --clamp-viewport-min: 375;
+  --clamp-viewport-max: 1280;
+  --clamp-root-font-size: 16;
+  --clamp-slope: calc(
+    (var(--clamp-max) - var(--clamp-min)) /
+      (var(--clamp-viewport-max) - var(--clamp-viewport-min))
+  );
+  --clamp-y-axis-intersection: calc(
+    var(--clamp-min) - (var(--clamp-slope) * var(--clamp-viewport-min))
+  );
+  --clamp-preffered-value: calc(
+    var(--clamp-y-axis-intersection) * (1rem / var(--clamp-root-font-size)) +
+      (var(--clamp-slope) * 100vi)
+  );
+  --clamp: clamp(
+    calc(var(--clamp-min) * (1rem / var(--clamp-root-font-size))),
+    var(--clamp-preffered-value),
+    calc(var(--clamp-max) * (1rem / var(--clamp-root-font-size)))
+  );
+
+  box-sizing: border-box;
+  font-size: var(--clamp);
+}
+
+:where(:any-link) {
+  color: var(--link-color);
+  text-decoration-color: color-mix(in srgb, currentcolor, transparent 40%);
+  text-underline-offset: 0.25em;
+
+  &:focus-visible {
+    text-decoration: underline;
+  }
+}
+
+:where(:any-link, :enabled, summary) {
+  --hover-on: ;
+  --hover-off: initial;
+}
+
+:where(:where(:any-link, :enabled, summary):focus-visible) {
+  --hover-on: initial;
+  --hover-off: ;
+}
+
+@media (any-hover: hover) {
+  :where(:where(:any-link, :enabled, summary):hover) {
+    --hover-on: initial;
+    --hover-off: ;
+  }
+}
+
+@media (any-hover: hover) {
+  &:hover {
+    --hover-off: ;
+    --hover-on: initial;
+  }
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+:where(:target) {
+  /* border-block-endの分を引く */
+  scroll-margin-block: calc(var(--header-block-size) - 1px);
+}
+
+:where(html) {
+  color: var(--font-color);
+  color-scheme: var(--theme, light dark);
+  background-color: var(--background-color);
+
+  @media (width <= 375px) {
+    font-size: 14px;
+  }
+}
+
+:where(body) {
+  --clamp-min: 14;
+  --clamp-max: 16;
+
+  overflow-y: scroll;
+  font-family: var(--ff-noto-sans-jp);
+  line-height: 1.6;
+  word-break: normal;
+  overflow-wrap: anywhere;
+  line-break: strict;
+  text-size-adjust: 100%;
+
+  &:has(dialog[open]) {
+    overflow: hidden;
+  }
+}
+
+:where(main) {
+  container-type: inline-size;
+  container-name: main;
+}
+
+:where(h2) {
+  --clamp-min: 18;
+  --clamp-max: 20;
+
+  padding: 1rem 2rem;
+  border-block-start: var(--border-style);
+  border-block-end: var(--border-style);
+}
+
+:where(h3) {
+  --clamp-min: 16;
+  --clamp-max: 18;
+}
+
+:where(ul, ol) {
+  padding: unset;
+  list-style-type: '';
+}
+
+:where(img) {
+  max-inline-size: 100%;
+  block-size: auto;
+  vertical-align: bottom;
+}
+
+:where(svg) {
+  vertical-align: bottom;
+}
+
+:where(code, kbd, samp) {
+  font-family: var(--ff-code);
+}
+
+:where(textarea) {
+  --cols: 30rem;
+  --min-rows: 5lh;
+  --max-rows: 20lh;
+  --padding: 1em;
+
+  inline-size: min(100%, var(--cols));
+  min-block-size: calc(var(--min-rows) + var(--padding) * 2);
+  max-block-size: calc(var(--max-rows) + var(--padding) * 2);
+  padding: var(--padding);
+  font-size: 1rem;
+  field-sizing: content;
+
+  /* 指定されたblock-sizeを維持してリサイズできるようになる */
+  resize: block;
+}
+
+:where(button) {
+  font-size: 1rem;
+  color: inherit;
+  border: none;
+}
+
+:where(input[type='text']) {
+  font-size: 1rem;
+}
+
+:where(button, [type='button'], [type='reset'], [type='submit']) {
+  touch-action: manipulation;
+}
+
+:where(
+    :any-link,
+    button,
+    [type='button'],
+    [type='reset'],
+    [type='submit'],
+    label[for],
+    select,
+    summary,
+    [role='tab'],
+    [role='button']
+  ) {
+  cursor: pointer;
+}
+
+:where(dialog::backdrop) {
+  background-color: rgb(0 0 0 / 50%);
+  -webkit-backdrop-filter: blur(5px); /* stylelint-disable-line */
+  backdrop-filter: blur(5px);
+}
+
+:where(.site-wrap:has(dialog[open])) {
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after,
+  ::backdrop {
+    background-attachment: scroll !important;
+    transition-delay: 0s !important;
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,114 @@
+---
+import type { MarkdownHeading } from 'astro'
+import type { HTMLAttributes } from 'astro/types'
+
+interface TocItem extends MarkdownHeading {
+  id: number
+  children: MarkdownHeading[]
+}
+
+interface Props extends HTMLAttributes<'aside'> {
+  headings: MarkdownHeading[]
+}
+
+const { headings, ...attrs } = Astro.props
+
+const tocItems = (() => {
+  const items: TocItem[] = []
+  let parentId = 0
+
+  headings.forEach((h, i) => {
+    // `parentId`と同じ`id`を探して親を特定する
+    const parent = items.find((item) => item.id === parentId)
+
+    // `depth`が2の時のみ`parentId`が更新されるので、親の識別子として`id`に代入する
+    if (h.depth === 2) {
+      parentId = i
+      items.push({ id: i, ...h, children: [] })
+    }
+
+    if (parent && h.depth >= 3) {
+      parent.children.push(h)
+    }
+  })
+
+  return items
+})()
+---
+
+<aside class="single-toc" {...attrs}>
+  <div class="single-toc-inner">
+    <h2 class="single-toc-title">目次</h2>
+    <ol class="single-toc-parent">
+      {
+        tocItems.map((item) => (
+          <li class="single-toc-parent-listitem">
+            <a href={`#${item.slug}`}>{item.text}</a>
+            <ol class="single-toc-children">
+              {item.children.map((child) => (
+                <li class="single-toc-children-listitem">
+                  <a href={`#${child.slug}`}>{child.text}</a>
+                </li>
+              ))}
+            </ol>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</aside>
+
+<style>
+  .single-toc {
+    grid-row: 1 / 2;
+    grid-column: 2 / 3;
+    padding-block-end: 2rem;
+    padding-inline: 2rem;
+    border-inline-start: var(--border-style);
+
+    @container main (inline-size <= 940px) {
+      grid-row: 1 / 2;
+      grid-column: 1 / 2;
+    }
+  }
+
+  .single-toc :where(ol) {
+    list-style-position: inside;
+    list-style-type: revert;
+  }
+
+  .single-toc :where(a) {
+    display: inline flow-root;
+    inline-size: calc(100% - 1.25rem);
+    padding-block: 0.75rem;
+    color: currentcolor;
+    text-decoration: unset;
+  }
+
+  .single-toc-title {
+    --clamp-min: 16;
+    --clamp-max: 16;
+
+    padding-block: 1rem;
+    text-align: center;
+    border: unset;
+  }
+
+  .single-toc-inner {
+    position: sticky;
+    inset-block-start: 3.5rem;
+    inset-inline-start: 0;
+  }
+
+  .single-toc-parent-listitem {
+    border-block-start: var(--border-style);
+  }
+
+  .single-toc-children {
+    padding-inline-start: 1rem;
+  }
+
+  .single-toc-children-listitem {
+    border-block-start: dotted 2px var(--border-color);
+  }
+</style>

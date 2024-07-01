@@ -1,0 +1,41 @@
+---
+import Layout from '../layouts/Layout.astro'
+---
+
+<Layout
+  title="404"
+  description="お探しのページは見つかりませんでした。"
+  data-is-sticky
+>
+  <div class="not-found-title-group">
+    <hgroup>
+      <h2>PAGE NOT FOUND</h2>
+      <p>お探しのページは見つかりませんでした。</p>
+    </hgroup>
+  </div>
+</Layout>
+
+<style>
+  .not-found-title-group {
+    display: grid;
+    align-items: center;
+    min-block-size: 100%;
+  }
+
+  .not-found-title-group :where(h2, p) {
+    max-inline-size: fit-content;
+    margin-inline: auto;
+  }
+
+  .not-found-title-group :where(h2) {
+    --clamp-min: 20;
+    --clamp-max: 40;
+
+    padding: unset;
+    border: unset;
+  }
+
+  .not-found-title-group :where(p) {
+    margin-block-start: 1rem;
+  }
+</style>

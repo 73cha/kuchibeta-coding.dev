@@ -1,0 +1,61 @@
+---
+// このコンポーネントの`props`を`Layout`に透過的に渡している
+// `Layout`から`title`, `description`, `meta`を渡したいため
+// `Layout`の10行目を参照
+type Props = {
+  title: string
+  description: string
+  seo?: {
+    url: string
+    schemaType: 'BlogPosting' | 'WebPage'
+    publishedAt: string
+    imgUrl?: string
+  }
+}
+
+const { title, description, seo } = Astro.props
+
+if (!seo) {
+  return
+}
+
+const { pathname } = Astro.url
+const { url, imgUrl, publishedAt, schemaType } = seo
+const { SITE } = import.meta.env
+
+const schema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': schemaType,
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': schemaType === 'WebPage' ? SITE : `${SITE}/${url}`,
+  },
+  headline: title,
+  description: description,
+  image: imgUrl,
+  datePublished: publishedAt,
+  author: {
+    '@type': 'Person',
+    name: '浪崎勝久',
+    url: SITE,
+    sameAs: 'https://x.com/_73cha',
+    jobTitle: 'マークアップエンジニア',
+  },
+})
+---
+
+<meta content={url === '/' ? SITE : `${SITE}/${url}`} property="og:url" />
+<meta content={description} property="og:description" />
+<meta content={title} property="og:title" />
+<meta
+  content={imgUrl ? `${SITE}/images/${imgUrl}` : `${SITE}/images/ogp.png`}
+  property="og:image"
+/>
+{pathname === '/' && <meta content="website" property="og:type" />}
+{pathname !== '/' && <meta content="article" property="og:type" />}
+<meta content="ja_JP" property="og:locale" />
+<meta content="くちべたコーディング" property="og:site_name" />
+<meta content="@_73cha" name="twitter:site" />
+<meta content={title} name="twitter:title" />
+<meta content="summary_large_image" name="twitter:card" />
+<script type="application/ld+json" set:html={schema} is:inline />

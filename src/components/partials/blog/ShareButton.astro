@@ -1,0 +1,93 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+import Icon from '../../Icon.astro'
+
+type snsName = 'x' | 'hatena' | 'facebook'
+
+interface Props extends HTMLAttributes<'a'> {
+  slug: string
+  shareOn: snsName
+  text?: string
+}
+
+const { shareOn, slug, text, ...attrs } = Astro.props
+
+const getShareUrl = (snsName: snsName) => {
+  const fullUrl = `${import.meta.env.SITE}/blog/${slug}`
+  const encode = (url: string) => encodeURIComponent(url)
+
+  switch (snsName) {
+    case 'x':
+      if (!text) return
+      return `https://twitter.com/intent/tweet?text=${encode(text)}&url=${encode(fullUrl)}`
+    case 'hatena':
+      return `https://b.hatena.ne.jp/entry/panel/?url=${encode(fullUrl)}`
+    case 'facebook':
+      return `http://www.facebook.com/share.php?u=${encode(fullUrl)}`
+  }
+}
+---
+
+<a
+  class="share-button"
+  href={getShareUrl(shareOn)}
+  data-is={shareOn}
+  target="_blank"
+  {...attrs}
+>
+  {
+    shareOn === 'x' && (
+      <>
+        <Icon name="x" size={24} />X で共有する
+      </>
+    )
+  }
+  {
+    shareOn === 'hatena' && (
+      <>
+        <Icon name="hatena" size={24} />
+        はてな で共有する
+      </>
+    )
+  }
+  {
+    shareOn === 'facebook' && (
+      <>
+        <Icon name="facebook" size={24} />
+        facebook で共有する
+      </>
+    )
+  }
+</a>
+
+<style>
+  .share-button {
+    --clamp-max: 14;
+
+    display: inline flex;
+    column-gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    inline-size: 100%;
+    block-size: 100%;
+    padding: 1rem;
+    color: var(--c-white);
+    text-decoration: unset;
+    background-color: hsl(var(--_background-color, 0deg 0 0%));
+
+    &:where([data-is='facebook']) {
+      --_background-color: 217deg 100% var(--hover-off, 52%)
+        var(--hover-on, 42%);
+    }
+
+    &:where([data-is='hatena']) {
+      --_background-color: 196deg 100% var(--hover-off, 44%)
+        var(--hover-on, 34%);
+    }
+
+    &:where([data-is='x']) {
+      --_background-color: 0deg 0 var(--hover-off, 0) var(--hover-on, 25%);
+    }
+  }
+</style>

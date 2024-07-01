@@ -1,0 +1,138 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Container from '../components/Container.astro'
+import Hero from '../components/partials/top/Hero.astro'
+import Intro from '../components/partials/top/Intro.astro'
+import Strength from '../components/partials/top/Strength.astro'
+import Career from '../components/partials/top/Career.astro'
+import Skills from '../components/partials/top/Skills.astro'
+import Results from '../components/partials/top/Results.astro'
+import Blog from '../components/partials/top/Blog.astro'
+---
+
+<Layout
+  title="くちべたコーディング"
+  description="くちべたコーディングは、口下手なフリーランスのマークアップエンジニアです。"
+  seo={{
+    url: '/',
+    publishedAt: '2024-07-01',
+    schemaType: 'WebPage',
+  }}
+  data-js-page="top"
+>
+  <Hero />
+  <Container>
+    <Blog />
+    <Intro />
+    <Strength />
+    <Career />
+    <Skills />
+    <Results />
+  </Container>
+</Layout>
+
+<script>
+  import type { InferArrayItem } from '../types/InferArrayItem'
+
+  const getAbsoluteTopOf = (elem: HTMLElement) => {
+    const headerBlockSize = parseInt(
+      getComputedStyle(document.documentElement).getPropertyValue(
+        '--header-block-size'
+      )
+    )
+
+    if (isNaN(headerBlockSize)) {
+      return 0
+    }
+
+    return elem.getBoundingClientRect().top - headerBlockSize + scrollY
+  }
+
+  const createDataFrom = (elems: NodeListOf<HTMLElement>) =>
+    Array.from(elems).map((elem) => ({
+      self: elem,
+      top: getAbsoluteTopOf(elem),
+    }))
+
+  const findAnchorBy = (anchorSelector: string, id: string) => {
+    return Array.from(
+      document.querySelectorAll<HTMLAnchorElement>(anchorSelector)
+    ).find((a) => a.hash.slice(1) === id)
+  }
+
+  const removeCurrentFrom = (navSelector: string) =>
+    document
+      .querySelector(`${navSelector} :where(a[data-is-current])`)
+      ?.removeAttribute('data-is-current')
+
+  const getIdBy = (element: HTMLElement) => element.getAttribute('id') as string
+
+  const setCurrentTo = (anchorSelector: string, id: string) => {
+    findAnchorBy(anchorSelector, id)?.setAttribute('data-is-current', 'true')
+  }
+
+  const data = createDataFrom(document.querySelectorAll('.section'))
+
+  const initPartOf = (
+    navSelector: string,
+    _data: InferArrayItem<typeof data>
+  ) => {
+    if (_data.top <= scrollY) {
+      removeCurrentFrom(navSelector)
+      setCurrentTo(`${navSelector} a`, getIdBy(_data.self))
+    }
+  }
+
+  const initializeActiveLink = () => {
+    let isScrolling = false
+    const navSelectorString = ':where([data-js-page="top"] .global-nav)'
+
+    window.addEventListener('scroll', () => {
+      if (isScrolling) return
+
+      isScrolling = true
+
+      // `body`の`data`でスコープを絞る
+      // `window`に対してイベントリスナーを設定しているため、
+      // ViewTransitionを使っているため、
+      // トップページ以外でもカレント処理が実行されてしまうのを防ぐ
+      // ナビゲーションのプロセスでwindowは削除されない
+      requestAnimationFrame(() => {
+        if (scrollY === 0) {
+          removeCurrentFrom(navSelectorString)
+        }
+
+        data.forEach((d) => {
+          initPartOf(navSelectorString, d)
+        })
+
+        isScrolling = false
+      })
+    })
+  }
+
+  const initializeClickAnchor = () => {
+    const closeModal = (modal: HTMLDialogElement) => {
+      modal.close()
+    }
+
+    const anchors = document.querySelectorAll(
+      ':where([data-js-page="top"] .mobile-menu-nav a)'
+    )
+
+    anchors.forEach((anchor) => {
+      anchor.addEventListener('click', () => {
+        const modal = document.querySelector<HTMLDialogElement>('dialog[open]')
+
+        if (!modal) return
+
+        closeModal(modal)
+      })
+    })
+  }
+  document.addEventListener('DOMContentLoaded', initializeActiveLink)
+  document.addEventListener('astro:page-load', initializeActiveLink)
+
+  document.addEventListener('DOMContentLoaded', initializeClickAnchor)
+  document.addEventListener('astro:page-load', initializeClickAnchor)
+</script>

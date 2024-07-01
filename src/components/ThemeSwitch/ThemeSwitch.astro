@@ -1,0 +1,146 @@
+<div class="theme-switch">
+  <div class="_rail">
+    <button
+      class="_button"
+      type="button"
+      id="js-theme-switch"
+      transition:persist
+    >
+      <span id="js-theme-announce" class="u-visualy-hidden">
+        現在のテーマは、パソコンのシステム設定です。
+      </span>
+    </button>
+  </div>
+</div>
+
+<style>
+  .theme-switch :where(._rail) {
+    position: relative;
+    inline-size: 4rem;
+    block-size: 1.5rlh;
+    background-color: var(--switch-bar-color);
+    border-radius: 100vmax;
+  }
+
+  .theme-switch :where(._button) {
+    position: absolute;
+    block-size: 1.25rlh;
+    aspect-ratio: 1;
+    background-color: var(--c-white);
+    background-image: var(--is-dark, url('./icon-moon.svg'))
+      var(--is-light, url('./icon-sun.svg'));
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: 24px;
+    border-width: 0;
+    border-radius: 100vmax;
+    transition: translate 0.1s ease-out;
+    translate: var(--switch-from);
+  }
+</style>
+
+<script>
+  import type { BundledTheme } from 'shiki'
+
+  type THEME = 'dark' | 'light'
+
+  let isTransitioning = false
+
+  const isDarkmode = matchMedia('(prefers-color-scheme: dark)').matches
+  const root = document.documentElement
+  const codeTheme: Record<THEME, BundledTheme> = {
+    dark: 'dark-plus',
+    light: 'light-plus',
+  }
+
+  const getThemeFromStorage: () => THEME | null = () => {
+    const theme = localStorage.getItem('theme')
+
+    return theme ? (theme as THEME) : null
+  }
+
+  const setThemeToStorage = (theme: THEME) =>
+    localStorage.setItem('theme', theme)
+
+  const trigger = document.querySelector(
+    '#js-theme-switch'
+  ) as HTMLButtonElement
+
+  const messageArea = document.querySelector(
+    '#js-theme-announce'
+  ) as HTMLSpanElement
+
+  const setCodeTheme = (theme: BundledTheme) => {
+    const ec = document.querySelector('.expressive-code')
+
+    ec?.setAttribute('data-theme', theme)
+  }
+
+  const setTheme = (theme: THEME) => {
+    root.style.setProperty('--theme', theme)
+    setThemeToStorage(theme)
+    setCodeTheme(codeTheme[theme])
+  }
+
+  const setThemeAnnounce = (announce: string) => {
+    messageArea.textContent = announce
+  }
+
+  const toggleTheme = () => {
+    const currentTheme = getThemeFromStorage()
+    const announce = {
+      dark: '現在のテーマは、ダークテーマです。',
+      light: '現在のテーマは、ライトテーマです。',
+    }
+    const theme = currentTheme === 'dark' ? 'light' : 'dark'
+
+    setThemeAnnounce(announce[theme])
+    setTheme(theme)
+  }
+
+  const toggleSwitch = () => {
+    if (isTransitioning) return
+
+    isTransitioning = true
+
+    const to = getComputedStyle(root).getPropertyValue('--switch-to')
+
+    const onTransitionEnd = () => {
+      toggleTheme()
+
+      isTransitioning = false
+
+      trigger.removeEventListener('transitionend', onTransitionEnd)
+    }
+
+    requestAnimationFrame(() => {
+      trigger.style.setProperty('translate', to)
+    })
+
+    trigger.addEventListener('transitionend', onTransitionEnd)
+  }
+
+  const initializeSwitchTheme = () => {
+    if (isDarkmode && !getThemeFromStorage()) {
+      setThemeToStorage('dark')
+    }
+
+    if (!isDarkmode && !getThemeFromStorage()) {
+      setThemeToStorage('light')
+    }
+
+    const theme = getThemeFromStorage()
+
+    if (!theme) return
+
+    setTheme(theme)
+
+    // HTML属性に最初から設定すると、最初の切り替えで読み上げてくれない
+    // 初期設定は、jsで動的に設定する必要がある
+    messageArea.setAttribute('aria-live', 'polite')
+    trigger.addEventListener('click', toggleSwitch)
+  }
+
+  document.addEventListener('DOMContentLoaded', initializeSwitchTheme)
+  document.addEventListener('astro:after-swap', initializeSwitchTheme)
+</script>

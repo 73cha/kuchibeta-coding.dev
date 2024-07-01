@@ -1,0 +1,68 @@
+---
+import type { CollectionEntry } from 'astro:content'
+
+import Icon from '../../Icon.astro'
+
+interface Props {
+  skill: CollectionEntry<'skill'>
+}
+
+const { skill } = Astro.props
+const { data } = skill
+const { lv, screenReaderText, description } = data
+---
+
+<div class="skill-item">
+  <div
+    class="skill-item-graph"
+    data-percent={lv}
+    style="/* stylelint-disable */ --_percent: 0%;"
+  >
+    <div class="u-visualy-hidden">
+      {screenReaderText}
+    </div>
+    <Icon name={skill.id} size={50} />
+  </div>
+
+  <div class="skill-item-text">
+    {description}
+  </div>
+</div>
+
+<style>
+  @property --_percent {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 0%;
+  }
+
+  .skill-item-graph {
+    display: block flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 8rem;
+    aspect-ratio: 1;
+    margin-inline: auto;
+    background-image: radial-gradient(
+        var(--background-color) 0% 60%,
+        transparent 60% 100%
+      ),
+      conic-gradient(
+        var(--graph-fill-color) 0% var(--_percent),
+        var(--graph-rail-color) var(--_percent) 100%
+      );
+    border-radius: 100vmax;
+    transition: --_percent 0.5s;
+  }
+
+  .skill-item-graph :where(img) {
+    inline-size: 2.75rem;
+    block-size: 2.75rem;
+  }
+
+  .skill-item-text {
+    --clamp-max: 14;
+
+    margin-block-start: 1rem;
+  }
+</style>

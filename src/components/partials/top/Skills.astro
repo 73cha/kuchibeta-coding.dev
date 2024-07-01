@@ -1,0 +1,92 @@
+---
+import { getCollection } from 'astro:content'
+
+import Section from '../../Section.astro'
+import SkillItem from './SkillItem.astro'
+
+const skillCollection = await getCollection('skill')
+const skills = skillCollection.sort((a, b) =>
+  a.data.order < b.data.order ? -1 : 1
+)
+---
+
+<Section id="skills" data-is="skills" data-no-gutter>
+  <h2>スキル</h2>
+  <Fragment slot="content">
+    <ul class="skills-list">
+      {
+        skills.map((skill) => (
+          <li class="skills-listitem">
+            <SkillItem skill={skill} />
+          </li>
+        ))
+      }
+    </ul>
+  </Fragment>
+</Section>
+
+<style>
+  .skills-list {
+    display: block grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(275px, 100%), 1fr));
+    margin-block-end: -1px;
+    margin-inline-end: -1px;
+  }
+
+  .skills-listitem {
+    padding: 2rem;
+    border-block-end: var(--border-style);
+    border-inline-end: var(--border-style);
+
+    @container main (inline-size <= 640px) {
+      border-inline-end: revert;
+    }
+  }
+</style>
+
+<script>
+  const options: IntersectionObserverInit = {
+    root: null, // nullの場合はビューポートにな
+    rootMargin: '-100px 0px', // rootの周囲に設定されるオフセット
+    threshold: 0.25, // 交差対象がどの程度見えているかの指定 intersectionRatioに反映される
+  }
+
+  const callback: IntersectionObserverCallback = (entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return
+
+      const target = entry.target as HTMLDivElement
+      const { percent } = target.dataset
+
+      requestAnimationFrame(() => {
+        target.style.setProperty('--_percent', String(percent))
+      })
+
+      if (entry.intersectionRatio >= 0.25) {
+        observer.unobserve(entry.target)
+      }
+    })
+  }
+
+  const observer = new IntersectionObserver(callback, options)
+
+  const initializeAnimateProficiencyGraph = () => {
+    const graphs =
+      document.querySelectorAll<HTMLDivElement>('.skill-item-graph')
+
+    if (graphs.length === 0) return
+
+    graphs.forEach((graph) => {
+      observer.observe(graph)
+    })
+  }
+
+  document.addEventListener(
+    'DOMContentLoaded',
+    initializeAnimateProficiencyGraph
+  )
+  document.addEventListener(
+    'astro:page-load',
+    initializeAnimateProficiencyGraph
+  )
+</script>

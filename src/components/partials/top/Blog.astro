@@ -1,0 +1,117 @@
+---
+import { getCollection } from 'astro:content'
+import Section from '../../Section.astro'
+import TagList from '../../TagList.astro'
+
+const blogCollection = await getCollection('blog')
+const blogEntries = blogCollection
+  .sort((a, b) => (a.data.publishedAt > b.data.publishedAt ? -1 : 1))
+  .filter((post) => post.data.draft !== true)
+---
+
+<Section id="blog" data-is="blog">
+  <h2>ブログ</h2>
+
+  <Fragment slot="content">
+    <ul class="blog-list">
+      {
+        blogEntries.map(({ slug, data }) => (
+          <li class="blog-listitem">
+            <article class="blog-article">
+              <p>
+                <span class="u-visualy-hidden">投稿日</span>
+                <time datetime={data.publishedAt}>{data.publishedAt}</time>
+              </p>
+              <h3 id={`${slug}-title`}>
+                <a href={`/blog/${slug}`} class="blog-listitem-link">
+                  {data.title}
+                </a>
+              </h3>
+              <p id={`${slug}-desc`}>{data.summary}</p>
+              <div class="blog-listitem-tags">
+                <TagList tags={data.tags} />
+              </div>
+            </article>
+          </li>
+        ))
+      }
+    </ul>
+  </Fragment>
+</Section>
+
+<style>
+  .section:where([data-is='blog']) {
+    margin-block-start: -1px;
+  }
+
+  .blog-list {
+    margin: -2rem;
+  }
+
+  .blog-listitem {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: 2rem;
+
+    + & {
+      border-block-start: var(--border-style);
+    }
+
+    &::after {
+      inline-size: 0.7rem;
+      aspect-ratio: 1;
+      content: '';
+      border-block-start: solid 1px currentcolor;
+      border-inline-end: solid 1px currentcolor;
+      rotate: 45deg;
+    }
+
+    @media (any-hover: hover) {
+      &:hover {
+        background-color: var(--blog-item-hover-color);
+      }
+    }
+
+    &:focus-visible {
+      background-color: var(--blog-item-hover-color);
+    }
+  }
+
+  .blog-article {
+    position: relative;
+  }
+
+  .blog-article :where(time, p) {
+    --clamp-max: 14;
+  }
+
+  .blog-article :where(p) {
+    margin-block-start: 0.5rem;
+  }
+
+  .blog-article :where(time) {
+    color: var(--font-color-muted);
+  }
+
+  .blog-listitem-link {
+    color: unset;
+    text-decoration: unset;
+
+    &::before {
+      position: absolute;
+      inset-block-start: -2rem;
+      inset-inline-start: -2rem;
+      z-index: 1;
+      display: block flow;
+      inline-size: calc(100% + 4.75rem);
+      block-size: calc(100% + 4rem);
+      cursor: pointer;
+      content: '';
+    }
+  }
+
+  .blog-listitem-tags {
+    margin-block-start: 1rem;
+  }
+</style>

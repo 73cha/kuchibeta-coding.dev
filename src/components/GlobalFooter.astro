@@ -1,0 +1,78 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+type Props = HTMLAttributes<'footer'>
+
+import MainNavigation from './MainNavigation.astro'
+import Icon from './Icon.astro'
+
+const currentYear = () => new Date().getFullYear()
+
+const { ...attrs } = Astro.props
+const { PUBLIC_GITHUB_REPOSITORY_URL, PUBLIC_X_URL } = import.meta.env
+---
+
+<footer class="global-footer" {...attrs}>
+  <ul class="global-footer-linklist">
+    <li class="global-footer-linkitem">
+      <a href={PUBLIC_GITHUB_REPOSITORY_URL} target="_blank">
+        <Icon name="github" size={32} />
+        <span class="u-visualy-hidden">
+          Githubのリポジトへ新しいウィンドウで移動します。
+        </span>
+      </a>
+    </li>
+    <li class="global-footer-linkitem">
+      <a href="/rss.xml" target="_blank">
+        <Icon name="rss" size={32} />
+        <span class="u-visualy-hidden">
+          RSSフィードを新しいウィンドウで開きます。
+        </span>
+      </a>
+    </li>
+    <li class="global-footer-linkitem">
+      <a href={PUBLIC_X_URL} target="_blank">
+        <Icon name="x" size={32} />
+        <span class="u-visualy-hidden">
+          X(旧Twitter)アカウントへ新しいウィンドウで移動します。
+        </span>
+      </a>
+    </li>
+  </ul>
+  <MainNavigation
+    class="global-footer-nav"
+    aria-label="フッターナビゲーション"
+  />
+  <small translate="no">© {currentYear} Katsuhisa Namizaki</small>
+</footer>
+
+<style>
+  .global-footer {
+    --clamp-min: 12;
+    --clamp-max: 14;
+
+    padding-block: 5rem;
+    text-align: center;
+    background-color: var(--footer-background-color);
+    border-block-start: 1px solid var(--footer-border-color);
+  }
+
+  .global-footer-linklist {
+    display: block flex;
+    gap: 1rem;
+    place-content: center;
+  }
+
+  .global-footer-linkitem {
+    display: block flex;
+  }
+
+  .global-footer :where(a:has(svg)) {
+    color: var(--icon-fill-color);
+  }
+
+  .global-footer :where(small) {
+    display: block flow;
+    margin-block-start: 1rem;
+    color: var(--font-color-muted);
+  }
+</style>

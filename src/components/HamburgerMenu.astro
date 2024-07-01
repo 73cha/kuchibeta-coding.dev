@@ -1,0 +1,28 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+import Icon from './Icon.astro'
+
+type Props = HTMLAttributes<'button'>
+
+const { ...attrs } = Astro.props
+---
+
+<!-- transition:persistを付けてはいけない -->
+<button
+  data-modal-open="mobile-menu"
+  class="hamburger-menu"
+  type="button"
+  aria-haspopup="true"
+  aria-expanded="false"
+  aria-controls="mobile-menu"
+  {...attrs}
+>
+  <span class="u-visualy-hidden">モバイルメニューを開く</span>
+  <Icon name="hamburgar" size={32} />
+
+  <style>
+    .hamburger-menu {
+      background-color: transparent;
+    }
+  </style>
+</button>

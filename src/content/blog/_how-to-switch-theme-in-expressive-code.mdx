@@ -1,0 +1,22 @@
+---
+title: ExpressiveCodeでテーマを切り替える方法
+summary: テーマ変更に連動した、シンタックスハイライトのテーマ切り替え方法です。
+publishedAt: '2024-06-30'
+updatedAt: null
+tags: null
+draft: false
+---
+
+import Section from '../../components/Section.astro'
+
+<Section>
+  ## コード例
+  <Fragment slot="content">
+    ```html title="index.html" del={1} ins={2}
+    <div class="hoge">
+    <div class="hoge1">
+      hoge
+    </div>
+    ```
+  </Fragment>
+</Section>

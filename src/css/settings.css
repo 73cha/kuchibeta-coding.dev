@@ -1,0 +1,28 @@
+:root {
+  --c-white: hsl(0deg 0% 100%);
+  --c-black: hsl(0deg 0% 0%);
+  --c-green: hsl(146deg 70% 46%);
+  --c-aqua: hsl(207deg 100% 62%);
+  --c-aqua-95: hsl(206deg 39% 95%);
+  --c-aqua-90: hsl(206deg 39% 90%);
+  --c-aqua-88: hsl(206deg 39% 88%);
+  --c-aqua-80: hsl(206deg 39% 80%);
+  --c-aqua-68: hsl(206deg 39% 68%);
+  --c-dark-43: hsl(0deg 0% 43%);
+  --c-dark-33: hsl(0deg 0% 33%);
+  --c-dark-23: hsl(0deg 0% 23%);
+  --c-dark-15: hsl(0deg 0% 15%);
+  --c-dark-14: hsl(0deg 0% 14%);
+  --c-dark-12: hsl(0deg 0% 12%);
+  --c-dark-11: hsl(0deg 0% 11%);
+  --z-foward: calc(infinity);
+  --ff-basic: 'Helvetica Neue', arial, 'Hiragino Kaku Gothic ProN',
+    'Hiragino Sans', meiryo, sans-serif;
+  --ff-noto-sans-jp: 'Noto Sans JP', sans-serif;
+  --ff-code: ui-monospace, sfmono-regular, menlo, monaco, consolas, 'Liberation Mono', 'Courier New', monospace;
+  --header-block-size: 60px;
+  --leading-trim: calc((1em - 1lh) / 2);
+  --border-style: solid 1px var(--border-color);
+  --hover-off: initial;
+  --hover-on: ;
+}

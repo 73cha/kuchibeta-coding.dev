@@ -1,0 +1,69 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+interface Props extends HTMLAttributes<'nav'> {
+  title: string
+}
+
+const { pathname } = Astro.url
+const [root, _sub] = pathname.split('/').filter((path) => path)
+const { title, ...attrs } = Astro.props
+---
+
+<nav class="breadcrumbs" aria-label="パンくずリスト" {...attrs}>
+  <ol class="breadcrumbs-list">
+    <li class="breadcrumbs-listitem">
+      <a href="/">トップ</a>
+    </li>
+    <li class="breadcrumbs-listitem">
+      {root === 'blog' && <a href="/#blog">ブログ</a>}
+    </li>
+    <li class="breadcrumbs-listitem" aria-current="page">
+      <span class="u-visualy-hidden">
+        現在、閲覧中のページは、{title}です。
+      </span>
+      <b aria-hidden="true">{title}</b>
+    </li>
+  </ol>
+</nav>
+
+<style>
+  .breadcrumbs {
+    --clamp-max: 14;
+
+    border-block-start: var(--border-style);
+
+    @container main (inline-size <= 640px) {
+      --clamp-min: 12;
+    }
+  }
+
+  .breadcrumbs-list {
+    --_inline-size: 1080px;
+
+    max-inline-size: var(--_inline-size);
+    padding: 1rem;
+    margin-inline: auto;
+  }
+
+  .breadcrumbs-listitem {
+    display: unset;
+
+    &:not(:last-child)::after {
+      display: inline flow-root;
+      inline-size: 0.5rem;
+      aspect-ratio: 1;
+      margin-inline: 0.5rem;
+      content: '';
+      border-block-start: solid 1px currentcolor;
+      border-inline-end: solid 1px currentcolor;
+      rotate: 45deg;
+    }
+  }
+
+  .breadcrumbs-listitem :where(a) {
+    display: inline flow-root;
+    color: unset;
+    text-decoration: unset;
+  }
+</style>

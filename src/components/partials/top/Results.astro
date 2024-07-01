@@ -1,0 +1,45 @@
+---
+import { getCollection } from 'astro:content'
+
+import Section from '../../Section.astro'
+import ResultItem from './ResultItem.astro'
+
+const resultCollection = await getCollection('result')
+const results = resultCollection.sort((a, b) =>
+  a.data.period.end > b.data.period.end ? -1 : 1
+)
+---
+
+<Section id="results">
+  <h2>実績</h2>
+  <Fragment slot="content">
+    <p>
+      公開可能な実績の一部になります。直近数年以内の仕事を掲載しています。主な役割は、マークアップ・CSS・JavaScriptでの実装です。
+    </p>
+    <div class="results-mask">
+      <ul class="results-list">
+        {
+          results.map((result) => (
+            <li class="results-listitem">
+              <ResultItem result={result} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </Fragment>
+</Section>
+
+<style>
+  .results-list {
+    margin-block-start: 2.5rem;
+  }
+
+  .results-listitem {
+    + & {
+      padding-block-start: 4rem;
+      margin-block-start: 4rem;
+      border-block-start: var(--border-style);
+    }
+  }
+</style>

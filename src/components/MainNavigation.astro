@@ -1,0 +1,102 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+type Props = HTMLAttributes<'nav'>
+
+const { ...attrs } = Astro.props
+const listItems = [
+  {
+    label: 'ブログ',
+    href: '/#blog',
+    isCurrent: Astro.url.pathname.includes('blog'),
+  },
+  { label: '自己紹介', href: '/#intro' },
+  { label: '強み', href: '/#strength' },
+  { label: '経歴', href: '/#career' },
+  { label: 'スキル', href: '/#skills' },
+  { label: '実績', href: '/#results' },
+]
+---
+
+<nav {...attrs}>
+  <ul class="list">
+    {
+      listItems.map((listItem) => (
+        <li class="listitem">
+          <a
+            class="listitem-link"
+            href={listItem.href}
+            data-is-current={listItem.isCurrent ? 'true' : 'false'}
+          >
+            {listItem.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  :is(.global-nav, .global-footer-nav) :where(.list) {
+    display: block flex;
+    gap: 0 1.5rem;
+    place-content: center;
+    align-items: center;
+  }
+
+  :is(.global-nav, .global-footer-nav, .mobile-menu-nav) :where(a) {
+    text-decoration: unset;
+
+    &[data-is-current='true'] {
+      color: var(--link-color);
+      pointer-events: none;
+    }
+
+    @media (any-hover: hover) {
+      &:hover {
+        color: var(--link-color);
+      }
+    }
+
+    &:focus-visible {
+      color: var(--link-color);
+    }
+  }
+
+  .global-nav :where(a) {
+    color: var(--header-link-color);
+  }
+
+  .global-footer-nav {
+    margin-block-start: 1rem;
+  }
+
+  .global-footer-nav :where(a) {
+    color: var(--footer-link-color);
+  }
+
+  .mobile-menu-nav {
+    --clamp-min: 15;
+  }
+
+  .mobile-menu-nav :where(a) {
+    display: block grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: 1rem;
+    color: currentcolor;
+
+    &::after {
+      inline-size: 12px;
+      aspect-ratio: 1;
+      content: '';
+      border-block-start: solid 1px currentcolor;
+      border-inline-end: solid 1px currentcolor;
+      rotate: 45deg;
+    }
+  }
+
+  .mobile-menu-nav :where(.listitem) {
+    border-block-start: 1px solid var(--modal-menu-border-color);
+  }
+</style>

@@ -1,0 +1,75 @@
+:root {
+  &[style*='--theme: light;'] {
+    --is-light: initial;
+    --is-dark: ;
+    --background-color: var(--c-aqua-95);
+    --border-color: var(--c-aqua-80);
+    --link-color: var(--c-aqua);
+    --font-color: var(--c-black);
+    --font-color-muted: var(--c-aqua-68);
+    --header-background-color: var(--c-white);
+    --header-link-color: var(--c-black);
+    --header-border-color: var(--c-aqua-88);
+    --switch-from: calc(100% + 1px) 3px;
+    --switch-to: 3px 3px;
+    --switch-bar-color: var(--c-aqua-88);
+    --graph-fill-color: var(--c-aqua);
+    --graph-rail-color: var(--c-aqua-88);
+    --timeline-line-color: var(--c-aqua-80);
+    --timeline-border-color-for-past: var(--c-white);
+    --timeline-point-color-for-past: var(--c-aqua-80);
+    --timeline-border-color-for-current: var(--c-white);
+    --timeline-point-color-for-current: var(--c-aqua);
+    --icon-fill-color: var(--c-black);
+    --footer-link-color: var(--c-black);
+    --footer-background-color: var(--c-white);
+    --footer-border-color: var(--c-aqua-88);
+    --hero-key-background-color:var(--c-aqua-90); 
+    --hero-background-color: var(--c-aqua-90);
+    --hero-grid-color: var(--c-aqua-95);
+    --modal-background-color: var(--c-aqua-95);
+    --modal-close-background-color: var(--c-aqua);
+    --modal-menu-border-color: var(--c-aqua-80);
+    --blog-item-hover-color: var(--c-aqua-90);
+    --rlc-background-color: var(--c-white);
+    --tag-background-color: var(--c-white);
+    --code-background-color: var(--c-aqua-90);
+  }
+
+  &[style*='--theme: dark;'] {
+    --is-light: ;
+    --is-dark: initial;
+    --background-color: var(--c-dark-14);
+    --border-color: var(--c-dark-23);
+    --link-color: var(--c-green);
+    --font-color: var(--c-white);
+    --font-color-muted: var(--c-dark-43);
+    --header-background-color: var(--c-dark-14);
+    --header-link-color: var(--c-white);
+    --header-border-color: var(--c-dark-23);
+    --switch-from: 3px 3px;
+    --switch-to: calc(100% + 1px) 3px;
+    --switch-bar-color: var(--c-dark-23);
+    --graph-fill-color: var(--c-green);
+    --graph-rail-color: var(--c-dark-33);
+    --timeline-line-color: var(--c-dark-23);
+    --timeline-border-color-for-past: var(--c-dark-43);
+    --timeline-point-color-for-past: var(--c-dark-33);
+    --timeline-border-color-for-current: var(--c-white);
+    --timeline-point-color-for-current: var(--c-green);
+    --icon-fill-color: var(--c-white);
+    --footer-link-color: var(--c-white);
+    --footer-background-color: var(--c-dark-14);
+    --footer-border-color: var(--c-dark-23);
+    --hero-key-background-color:var(--c-dark-11); 
+    --hero-background-color: var(--c-dark-11);
+    --hero-grid-color: var(--c-dark-15); 
+    --modal-background-color: var(--c-dark-15);
+    --modal-close-background-color: var(--c-green);
+    --modal-menu-border-color: var(--c-dark-23);
+    --blog-item-hover-color: var(--c-dark-11);
+    --rlc-background-color: var(--c-dark-11);
+    --tag-background-color: var(--c-dark-11);
+    --code-background-color: var(--c-dark-23);
+  }
+}

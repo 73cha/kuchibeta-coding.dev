@@ -1,0 +1,38 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+import { getIconData, iconToSVG, replaceIDs } from '@iconify/utils'
+import { iconifyJson } from '../iconLoader'
+import type { IconNames } from '../types/IconNames'
+
+interface Props extends HTMLAttributes<'svg'> {
+  name: IconNames
+  title?: string
+  width?: number
+  height?: number
+  size?: number
+}
+
+const { name, title, ...props } = Astro.props
+const errorMessage = `${name}のアイコンは見つかりませんでした。`
+const iconData = getIconData(iconifyJson, name)
+
+if (!iconData) {
+  throw new Error(errorMessage)
+}
+
+if (props.size) {
+  props.width = props.size
+  props.height = props.size
+
+  delete props.size
+}
+
+const renderData = iconToSVG(iconData, { height: 'unset' })
+const body = replaceIDs(renderData.body)
+const attrs = { ...renderData.attributes, ...props }
+---
+
+<svg {...attrs} aria-hidden="true">
+  {title && <title>{title}</title>}
+  <Fragment set:html={body} />
+</svg>

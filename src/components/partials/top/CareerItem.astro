@@ -1,0 +1,106 @@
+---
+import { type CollectionEntry } from 'astro:content'
+
+interface Props {
+  career: CollectionEntry<'career'>
+}
+
+const { career } = Astro.props
+const { data } = career
+const { subject, period, description, url } = data
+
+const getFullYear = (date: string) => {
+  const getDate = new Date(date).getDate()
+
+  if (isNaN(getDate)) return
+
+  return date.split('-')[0]
+}
+
+const start = getFullYear(period.start)
+const end = period.end === '現在' ? period.end : getFullYear(period.end)
+---
+
+<section class="career-item">
+  <div class="career-item-title-wrap">
+    <div class="career-item-date-wrap">
+      <span class="u-visualy-hidden">
+        {subject}にいた期間:{period.start}から{period.end}
+      </span>
+      <time datetime={period.start} aria-hidden="true">{start}</time>
+      <time datetime={period.end} aria-hidden="true">{end}</time>
+    </div>
+    <h3>{subject}</h3>
+    {
+      url && (
+        <a href={url} target="_blank">
+          <span class="u-visualy-hidden">
+            {subject}のウェブサイトです。新しいウィンドウで開きます。
+          </span>
+          <span aria-hidden="true">{url}</span>
+        </a>
+      )
+    }
+  </div>
+  {description.map((text) => <p>{text}</p>)}
+</section>
+
+<style>
+  .career-item {
+    position: relative;
+    padding-inline-start: 2.5rem;
+
+    + & {
+      margin-block-start: 1.5rem;
+    }
+
+    &::before {
+      position: absolute;
+      inset-block-start: 0.6rem;
+      inset-inline-start: 0;
+      display: block flow;
+      inline-size: 9px;
+      aspect-ratio: 1;
+      content: '';
+      background-color: var(--timeline-point-color-for-past);
+      border: solid 2px var(--timeline-border-color-for-past);
+      border-radius: 100vmax;
+    }
+
+    &:last-of-type::before {
+      background-color: var(--timeline-point-color-for-current);
+      border: solid 2px var(--timeline-border-color-for-current);
+    }
+  }
+
+  .career-item :where(p) {
+    --clamp-max: 14;
+
+    margin-block-start: 0.5rem;
+  }
+
+  .career-item-date-wrap {
+    --clamp-min: 12;
+    --clamp-max: 14;
+
+    color: var(--font-color-muted);
+  }
+
+  .career-item-date-wrap :where(time + time) {
+    &::before {
+      content: '~';
+      speak: never;
+    }
+  }
+
+  .career-item-title-wrap {
+    display: block flex;
+    column-gap: 0.5rem;
+    align-items: center;
+  }
+
+  .career-item-title-wrap :where(a) {
+    --clamp-min: 12;
+    --clamp-max: 14;
+  }
+</style>

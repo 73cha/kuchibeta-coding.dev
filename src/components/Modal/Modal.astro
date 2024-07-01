@@ -1,0 +1,145 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+type Props = HTMLAttributes<'dialog'>
+
+const { ...attrs } = Astro.props
+---
+
+<dialog class="modal" {...attrs} autofocus>
+  <div class="modal-inner">
+    <slot />
+    <div class="modal-close-wrap">
+      <button
+        data-modal-close={attrs['data-modal-id']}
+        class="modal-close-button"
+        type="button"
+        aria-controls={attrs['data-modal-id']}
+        aria-expanded="true"
+        transition:persist
+      >
+        <span class="u-visualy-hidden">
+          {attrs['aria-label']}を閉じる
+        </span>
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .modal-inner {
+    display: grid;
+    background-color: var(--modal-background-color);
+    border-block-end: var(--border-style);
+  }
+
+  .modal-close-wrap {
+    grid-row: 1 / 2;
+    grid-column: 1/ 2;
+  }
+
+  .modal-close-button {
+    inline-size: 40px;
+    aspect-ratio: 1;
+    padding: 0.5rem;
+    background-color: var(--modal-close-background-color);
+    background-image: url('./icon-cross.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+</style>
+
+<script>
+  /**
+   * モーダルに`data-modal-id={id}`
+   * 開くボタンに`data-modal-open={data-modal-id}`
+   * 閉じるボタンに`data-modal-close={data-modal-id}`
+   *
+   */
+  let isProcessing = false
+  const removeListeners: Array<() => void> = []
+
+  const handleKeyDown = (event: KeyboardEvent, modal: HTMLDialogElement) => {
+    if (event.key === 'Escape') {
+      event.preventDefault()
+      closeModal(modal)
+    }
+  }
+
+  const handleDismiss = (event: MouseEvent, modal: HTMLDialogElement) => {
+    if (event.target === modal) {
+      closeModal(modal)
+    }
+  }
+
+  const openModal = (modal: HTMLDialogElement) => {
+    if (isProcessing) return
+
+    isProcessing = true
+
+    const keyDownHandler = (event: KeyboardEvent) => handleKeyDown(event, modal)
+    const dissMissHandler = (event: MouseEvent) => handleDismiss(event, modal)
+
+    modal.showModal()
+
+    window.addEventListener('keydown', keyDownHandler)
+    removeListeners.push(() =>
+      window.removeEventListener('keydown', keyDownHandler)
+    )
+
+    modal.addEventListener('click', dissMissHandler)
+    removeListeners.push(() =>
+      modal.removeEventListener('click', dissMissHandler)
+    )
+
+    isProcessing = false
+  }
+
+  const closeModal = (modal: HTMLDialogElement) => {
+    if (isProcessing) return
+
+    isProcessing = true
+
+    modal.close()
+
+    removeListeners.forEach((listener) => listener())
+    removeListeners.length = 0
+
+    isProcessing = false
+  }
+
+  export const initializeModal = () => {
+    const openers =
+      document.querySelectorAll<HTMLButtonElement>('[data-modal-open]')
+
+    const closers =
+      document.querySelectorAll<HTMLButtonElement>('[data-modal-close]')
+
+    const getModal = (id: string) =>
+      document.querySelector<HTMLDialogElement>(`[data-modal-id='${id}']`)
+
+    const attachEvent = (
+      triggers: NodeListOf<HTMLButtonElement>,
+      handler: (modal: HTMLDialogElement) => void,
+      datasetAttribute: 'modalOpen' | 'modalClose'
+    ) => {
+      triggers.forEach((trigger) => {
+        const id = trigger.dataset[datasetAttribute]
+
+        if (!id) return
+
+        const modal = getModal(id)
+
+        if (!modal) return
+
+        trigger.addEventListener('click', () => handler(modal))
+      })
+    }
+
+    attachEvent(openers, openModal, 'modalOpen')
+    attachEvent(closers, closeModal, 'modalClose')
+  }
+
+  document.addEventListener('DOMContentLoaded', initializeModal)
+  document.addEventListener('astro:page-load', initializeModal)
+</script>
