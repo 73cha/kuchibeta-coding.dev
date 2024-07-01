@@ -2,6 +2,8 @@
 // このコンポーネントの`props`を`Layout`に透過的に渡している
 // `Layout`から`title`, `description`, `meta`を渡したいため
 // `Layout`の10行目を参照
+// `seo`はオプショナルになっているので、渡ってこなければ`Seo`コンポーネントは使われない
+// SEOをしたいページは、`seo`の`props`を`Layout`に渡す
 type Props = {
   title: string
   description: string
