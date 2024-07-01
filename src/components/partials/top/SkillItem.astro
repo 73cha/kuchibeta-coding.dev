@@ -21,7 +21,7 @@ const { lv, screenReaderText, description } = data
     <div class="u-visualy-hidden">
       {screenReaderText}
     </div>
-    <Icon name={skill.id} size={50} />
+    <Icon name={skill.id} size={50} class="skill-item-icon" />
   </div>
 
   <div class="skill-item-text">
@@ -55,9 +55,8 @@ const { lv, screenReaderText, description } = data
     transition: --_percent 0.5s;
   }
 
-  .skill-item-graph :where(img) {
-    inline-size: 2.75rem;
-    block-size: 2.75rem;
+  .skill-item-icon {
+    color: #fff;
   }
 
   .skill-item-text {
