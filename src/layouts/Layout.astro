@@ -53,10 +53,6 @@ const titleTemplate = (title: string) => {
       media="(prefers-color-scheme: dark)"
       content="#1c1c1c"
     />
-    <!-- 
-      `seo`はオプショナルになっているので、渡ってこなければ`Seo`コンポーネントは使われない
-      SEOをしたいページは、`seo`の`props`を`Layout`に渡す
-    -->
     {seo && <Seo title={title} description={description} seo={seo} />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -91,8 +87,7 @@ const titleTemplate = (title: string) => {
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-BX4HB2CTDJ"
-      is:inline
-    ></script>
+      is:inline></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || []
       function gtag() {
