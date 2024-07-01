@@ -1,6 +1,12 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
-    "allowJs": true
+    "allowJs": true,
+    "paths": {
+      "@@": ["./"],
+      "@": ["./src"],
+      "@components": ["./src/components"],
+      "@public": ["./public"]
+    }
   }
 }
