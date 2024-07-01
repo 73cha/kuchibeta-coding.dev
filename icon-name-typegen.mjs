@@ -1,8 +1,8 @@
 import fs from 'node:fs/promises'
 
 const __dirname = import.meta.dirname
-
-const files = await fs.readdir(`${__dirname}/src/components/icons`, {
+const rootPath = __dirname.replace('src', '')
+const files = await fs.readdir(`${rootPath}/public/icons`, {
   encoding: 'utf-8'
 })
 

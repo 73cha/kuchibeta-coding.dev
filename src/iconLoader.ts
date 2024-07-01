@@ -9,8 +9,8 @@ import {
 import type { SVG } from '@iconify/tools'
 import type { Color } from '@iconify/utils/lib/colors/types'
 
-const __dirname = import.meta.dirname
-const iconSet = await importDirectory(`${__dirname}/components/icons`, {
+const rootPath = import.meta.dirname.replace('src', '')
+const iconSet = await importDirectory(`${rootPath}/public/icons`, {
   prefix: 'local',
   keyword: (file) => file.file, // ファイル名を識別子として利用する `file.subdir`もある
   keepTitles: true,
