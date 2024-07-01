@@ -9,10 +9,11 @@ import {
 import type { SVG } from '@iconify/tools'
 import type { Color } from '@iconify/utils/lib/colors/types'
 
-const rootPath = import.meta.dirname.replace('src', '')
-const iconSet = await importDirectory(`${rootPath}/public/icons`, {
+// パスの指定に`__dirname`を使うのはNG
+// ビルドプロセスでディレクトリが見つからない例外が発生する
+const iconSet = await importDirectory(`src/icons`, {
   prefix: 'local',
-  keyword: (file) => file.file, // ファイル名を識別子として利用する `file.subdir`もある
+  keyword: (file) => file.file,
   keepTitles: true,
 })
 
@@ -46,8 +47,6 @@ const convertToCurrentColorIfMonotone = (svg: SVG) => {
   parseColors(svg, {
     defaultColor: 'currentColor',
     callback: (_, colorStr, color) => {
-      console.log(color, colorStr)
-
       // `falsy` or 空(`none`や`transparent`)
       if (!color || isEmptyColor(color)) {
         return colorStr
