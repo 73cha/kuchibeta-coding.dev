@@ -167,5 +167,9 @@ const formatDate2Kanji = (date: string, when: 'start' | 'end') => {
       list-style-position: inside;
       list-style-type: disc;
     }
+
+    :where(ul > li + li) {
+      margin-block-start: 0.5rem;
+    }
   }
 </style>
