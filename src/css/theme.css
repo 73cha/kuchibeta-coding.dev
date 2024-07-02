@@ -1,7 +1,5 @@
 :root {
   &[style*='--theme: light;'] {
-    --is-light: initial;
-    --is-dark: ;
     --background-color: var(--c-aqua-95);
     --border-color: var(--c-aqua-80);
     --link-color: var(--c-aqua);
