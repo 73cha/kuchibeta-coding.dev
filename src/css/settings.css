@@ -1,4 +1,8 @@
 :root {
+  --is-light: initial;
+  --is-dark: ;
+  --hover-off: initial;
+  --hover-on: ;
   --c-white: hsl(0deg 0% 100%);
   --c-black: hsl(0deg 0% 0%);
   --c-green: hsl(146deg 70% 46%);
@@ -23,6 +27,4 @@
   --header-block-size: 60px;
   --leading-trim: calc((1em - 1lh) / 2);
   --border-style: solid 1px var(--border-color);
-  --hover-off: initial;
-  --hover-on: ;
 }
