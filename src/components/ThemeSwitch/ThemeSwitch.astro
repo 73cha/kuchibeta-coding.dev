@@ -71,9 +71,9 @@
   ) as HTMLSpanElement
 
   const setCodeTheme = (theme: BundledTheme) => {
-    const ec = document.querySelector('.expressive-code')
+    const codes = document.querySelectorAll('.expressive-code')
 
-    ec?.setAttribute('data-theme', theme)
+    codes?.forEach((code) => code.setAttribute('data-theme', theme))
   }
 
   const setTheme = (theme: THEME) => {
