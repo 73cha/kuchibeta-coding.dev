@@ -48,7 +48,7 @@ npm run gen:type:iconname
 
 /**
  * Recommend
- * 関心を分離している、唱題度が0.1.0
+ * 関心を分離している、詳細度が0.1.0
  */
 .hoge :where(p) {
   color: currentcolor;
