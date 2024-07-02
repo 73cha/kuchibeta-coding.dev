@@ -24,38 +24,33 @@
 }
 
 :where(:any-link) {
+  --_link-style: color-mix(in srgb, currentcolor, transparent 40%);
+
   color: var(--link-color);
-  text-decoration-color: color-mix(in srgb, currentcolor, transparent 40%);
+  text-decoration-color: var(--_link-style);
   text-underline-offset: 0.25em;
 
+  @media (any-hover: hover) {
+    &:hover {
+      --hover-off: ;
+      --hover-on: initial;
+
+      text-decoration-color: color-mix(
+        in srgb,
+        currentcolor,
+        transparent var(--hover-off, unset) var(--hover-on, 100%)
+      );
+    }
+  }
+
   &:focus-visible {
-    text-decoration: underline;
-  }
-}
-
-:where(:any-link, :enabled, summary) {
-  --hover-on: ;
-  --hover-off: initial;
-}
-
-:where(:where(:any-link, :enabled, summary):focus-visible) {
-  --hover-on: initial;
-  --hover-off: ;
-}
-
-@media (any-hover: hover) {
-  :where(:where(:any-link, :enabled, summary):hover) {
     --hover-on: initial;
     --hover-off: ;
+
+    text-decoration-color: var(--_link-style);
   }
 }
 
-@media (any-hover: hover) {
-  &:hover {
-    --hover-off: ;
-    --hover-on: initial;
-  }
-}
 
 :focus:not(:focus-visible) {
   outline: none;
