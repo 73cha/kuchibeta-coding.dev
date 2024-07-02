@@ -134,16 +134,9 @@ const { Content, headings } = await render()
       padding-block-start: unset;
     }
 
-    :where(h2) {
-      padding: unset;
-      padding-block-end: 1rem;
-      border: unset;
-      border-block-end: var(--border-style);
-    }
-
-    :where(*):not(:is(.rlc-container, .expressive-code) *) {
+    :where(*):not(:is(.rlc-container, .expressive-code, figure) *) {
       &:where(* + *) {
-        margin-block-start: 1rem;
+        margin-block-start: 1.5rem;
       }
 
       &:where(* + h2) {
@@ -155,8 +148,15 @@ const { Content, headings } = await render()
       }
 
       &:where(* + .rlc-container) {
-        margin-block-start: 2rem;
+        margin-block: 2rem 2rem;
       }
+    }
+
+    :where(h2) {
+      padding: unset;
+      padding-block-end: 1rem;
+      border: unset;
+      border-block-end: var(--border-style);
     }
 
     :where(code):not(.expressive-code code) {
@@ -168,6 +168,24 @@ const { Content, headings } = await render()
     :where(ul, ol) {
       list-style-position: inside;
       list-style-type: unset;
+    }
+
+    :where(figure) {
+      margin-block: 2rem 2rem;
+    }
+
+    :where(figcaption) {
+      --clamp-max: 14;
+
+      margin-block-start: 0.5rem;
+      color: var(--font-color-muted);
+      text-align: center;
+    }
+
+    :where(blockquote) {
+      padding-inline-start: 1rem;
+      color: var(--font-color-muted);
+      border-inline-start: 3px solid currentcolor;
     }
 
     :where(.expressive-code) {
@@ -254,59 +272,6 @@ const { Content, headings } = await render()
       border-bottom-right-radius: 0.25rem;
     }
   }
-
-  /* .single-toc {
-    grid-row: 1 / 2;
-    grid-column: 2 / 3;
-    padding-block-end: 2rem;
-    padding-inline: 2rem;
-    border-inline-start: var(--border-style);
-
-    @container main (inline-size <= 940px) {
-      grid-row: 1 / 2;
-      grid-column: 1 / 2;
-    }
-  }
-
-  .single-toc :where(ol) {
-    list-style-position: inside;
-    list-style-type: revert;
-  }
-
-  .single-toc :where(a) {
-    display: inline flow-root;
-    inline-size: calc(100% - 1.25rem);
-    padding-block: 0.75rem;
-    color: currentcolor;
-    text-decoration: unset;
-  }
-
-  .single-toc-title {
-    --clamp-min: 16;
-    --clamp-max: 16;
-
-    padding-block: 1rem;
-    text-align: center;
-    border: unset;
-  }
-
-  .single-toc-inner {
-    position: sticky;
-    inset-block-start: 3.5rem;
-    inset-inline-start: 0;
-  }
-
-  .single-toc-parent-listitem {
-    border-block-start: var(--border-style);
-  }
-
-  .single-toc-children {
-    padding-inline-start: 1rem;
-  }
-
-  .single-toc-children-listitem {
-    border-block-start: dotted 2px var(--border-color);
-  } */
 
   .single-share-buttons {
     display: block grid;
