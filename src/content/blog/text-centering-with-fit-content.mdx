@@ -2,14 +2,14 @@
 title: fit-contentを使ったテキストの中央寄せ
 summary: レスポンシブデザインで役立つTipsです。
 publishedAt: '2024-07-02'
-updatedAt: null
+updatedAt: '2024-07-03'
 tags:
 - css
 - tips
 draft: false
 ---
 
-## `text-align`を使った中央寄せの問題
+## text-alignを使った中央寄せの問題
 ビューポートが狭くなり折り返しが発生する場合、見た目的に不格好になってしまうことです。
 そのため、メディアクエリで`text-align`を`left`に戻す指定が必要になる場合があります。
 レスポンシブデザインでは、よくある状況だと思います。
@@ -19,6 +19,8 @@ draft: false
   <figcaption>`text-align: center;`での指定</figcaption>
 </figure>
 
+<p class="u-visualy-hidden">`text-align: center;`を使った、問題のあるコードの記述例があります。</p>
+<div aria-hidden="true">
 ```css title="🙅‍♂️ Not Recommend"
 .text {
   text-align: center;
@@ -30,29 +32,33 @@ draft: false
   }
 }
 ```
+</div>
 
-## `fit-content`を知る
+## fit-contentを知る
 `fit-content`とは、最小寸法・最大寸法がコンテンツの寸法になる指定です。
 `inline-block`の様に、対象の内容量に沿った寸法になります。
 
+<p class="u-visualy-hidden">MDNからの`fit-content`の概要の引用</p>
 > `width`, `height`, `min-width`, `min-height`, `max-width`, `max-height` のレイアウトされたボックスの大きさとして使用される場合、最大寸法と最小寸法は、コンテンツの寸法を参照します。
 
 https://developer.mozilla.org/ja/docs/Web/CSS/fit-content
 
 
-## `fit-content`の何が良いのか
-`text-align`での問題点を完全に解消することができます。
+## fit-contentの何が良いのか
+`text-align`での問題点を解消することができます。
 テキストの位置を変更していないので、不格好になることもありません。
-文字の面一が揃って綺麗です。
+文字の面位置が揃って綺麗です。
 
 <figure>
-  <img src="/images/blog/text-centering-with-fit-content/fit-content.jpg" alt="文字の折り返しもなく面一が揃って綺麗な様子" width="720" height="420" />
-  <figcaption>`iline-size: fit-content;`での指定</figcaption>
+  <img src="/images/blog/text-centering-with-fit-content/fit-content.jpg" alt="文字が不揃いではなく、面位置が揃って綺麗な様子" width="720" height="420" />
+  <figcaption>`inline-size: fit-content;`での指定</figcaption>
 </figure>
 
 メディアクエリが無くなり、記述量も少なくなりました。
 論理プロパティで記述していますが、通常のプロパティで書いても問題ありません。
 
+<p class="u-visualy-hidden">`inline-size: fit-content;`を使った、スマートなコードの記述例があります。</p>
+<div aria-hidden="true">
 ```diff lang=css title="🙆‍♂️ Recommend"
 - .text {
 -  text-align: center;
@@ -68,7 +74,52 @@ https://developer.mozilla.org/ja/docs/Web/CSS/fit-content
 +   margin-inline: auto;
 + }
 ```
+</div>
+
+通常のプロパティでの書き方はこちら。
+
+<p class="u-visualy-hidden">`margin-inline`を使わない、通常のコードの記述例があります。</p>
+<div aria-hidden="true">
+```css title=通常のプロパティでの記述
+.text {
+  inline-size: fit-content;
+  margin-right: auto;
+  margin-left: auto;
+}
+```
+</div>
+
+## margin-inlineを巡る議論
+`margin-inline`は`margin-(left|right)`と同じではありません。
+書字方向における指定になるので、そのことは念頭に置いて利用するべきだと思います。
+
+<p class="u-visualy-hidden">Xからの引用ツイート</p>
+<p class="u-visualy-hidden">前記事で要素のセンタリングにmargin-inline:auto紹介したら「margin-inlineは左右のショートハンドじゃねぇ！」ってマサカリめっちゃ飛んできたけど、そういう人に限ってアプローチは違えど同じく論理的に要素をセンタリングするjustify-content:centerに対して何も疑問を抱かないのは何でだろう🤔</p>
+<div class="single-embed" data-theme="dark" aria-hidden="true">
+  <blockquote class="twitter-tweet" data-theme="dark">
+    <p lang="ja" dir="ltr">
+      前記事で要素のセンタリングにmargin-inline:auto紹介したら「margin-inlineは左右のショートハンドじゃねぇ！」ってマサカリめっちゃ飛んできたけど、そういう人に限ってアプローチは違えど同じく論理的に要素をセンタリングするjustify-content:centerに対して何も疑問を抱かないのは何でだろう🤔
+    </p>
+    &mdash; TAK (@tak_dcxi)
+    <a href="https://twitter.com/tak_dcxi/status/1807949938472767517?ref_src=twsrc%5Etfw">July 2, 2024</a>
+  </blockquote>
+</div>
+<div class="single-embed" aria-hidden="true">
+  <blockquote class="twitter-tweet">
+    <p lang="ja" dir="ltr">
+      前記事で要素のセンタリングにmargin-inline:auto紹介したら「margin-inlineは左右のショートハンドじゃねぇ！」ってマサカリめっちゃ飛んできたけど、そういう人に限ってアプローチは違えど同じく論理的に要素をセンタリングするjustify-content:centerに対して何も疑問を抱かないのは何でだろう🤔
+    </p>
+    &mdash; TAK (@tak_dcxi) <a href="https://twitter.com/tak_dcxi/status/1807949938472767517?ref_src=twsrc%5Etfw">July 2, 2024</a>
+  </blockquote>
+</div>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+MDNに`margin-inline`について分かりやすいサンプルがあります。
+
+https://developer.mozilla.org/ja/docs/Web/CSS/margin-inline
 
 ## おわりに
 `fit-content`を使うと、レスポンシブデザインでよくある状況をスマートに解決することができます。
+ただ、`margin-inline`を合わせて使う場合は、書字方向による指定であることを念頭に置くべきだと思います。
 以上になります。
