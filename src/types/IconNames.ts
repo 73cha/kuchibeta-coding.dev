@@ -1,1 +1,1 @@
-export type IconNames = 'a11y' | 'astro' | 'browsers' | 'calendar' | 'code' | 'css' | 'facebook' | 'figma' | 'git' | 'github' | 'guage' | 'hamburgar' | 'hatena' | 'html' | 'jamstack' | 'javascript' | 'rails' | 'rss' | 'vue' | 'x'
+export type IconNames = '.DS_Store' | 'a11y' | 'astro' | 'browsers' | 'calendar' | 'code' | 'css' | 'facebook' | 'figma' | 'git' | 'github' | 'guage' | 'hamburgar' | 'hatena' | 'html' | 'jamstack' | 'javascript' | 'rails' | 'rss' | 'update' | 'vue' | 'x'
