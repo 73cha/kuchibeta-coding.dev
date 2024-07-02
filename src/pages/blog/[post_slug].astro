@@ -8,6 +8,7 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import TagList from '../../components/TagList.astro'
 import TableOfContents from '../../components/partials/blog/TableOfContents.astro'
 import ShareButton from '../../components/partials/blog/ShareButton.astro'
+import Icon from '../../components/Icon.astro'
 
 export const getStaticPaths = (async () => {
   const blogCollection = await getCollection('blog')
@@ -19,7 +20,7 @@ export const getStaticPaths = (async () => {
 
 const { post_slug } = Astro.params
 const { data, render } = await getEntry('blog', post_slug)
-const { title, publishedAt, summary, tags } = data
+const { title, publishedAt, updatedAt, summary, tags } = data
 const { Content, headings } = await render()
 ---
 
@@ -35,12 +36,23 @@ const { Content, headings } = await render()
 >
   <article class="single">
     <div class="single-title-wrap u-grid-background-img">
-      <p>
-        <span class="u-visualy-hidden">投稿日</span>
-        <time class="single-date" datetime={publishedAt}>
-          {publishedAt}
-        </time>
-      </p>
+      <div class="single-date-wrap">
+        <p class="single-publishedAt">
+          <span class="u-visualy-hidden">投稿日</span>
+          <time datetime={publishedAt}>
+            {publishedAt}
+          </time>
+        </p>
+        {
+          updatedAt && (
+            <p class="single-updatedAt">
+              <Icon name="update" size={20} />
+              <span class="u-visualy-hidden">更新日</span>
+              <time datetime={updatedAt}>{updatedAt}</time>
+            </p>
+          )
+        }
+      </div>
       <hgroup>
         <h1 class="single-title">{title}</h1>
         <p class="single-summary">{summary}</p>
@@ -88,14 +100,26 @@ const { Content, headings } = await render()
     }
   }
 
-  :is(.single-date, .single-title, .single-summary) {
+  :is(.single-title, .single-summary) {
     max-inline-size: fit-content;
     margin-inline: auto;
   }
 
-  .single-date {
-    display: block flow;
+  .single-date-wrap {
+    display: block flex;
+    column-gap: 1rem;
+    place-content: center;
+  }
+
+  :is(.single-publishedAt, .single-updatedAt) {
+    display: inline flex;
+    column-gap: 0.25rem;
+    align-items: center;
     color: var(--font-color-muted);
+  }
+
+  .single-updatedAt {
+    color: currentcolor;
   }
 
   .single-title {
@@ -103,14 +127,14 @@ const { Content, headings } = await render()
     --clamp-max: 40;
   }
 
+  .single-summary {
+    margin-block-start: 1rem;
+  }
+
   .single-tags {
     inline-size: fit-content;
     margin-block-start: 1rem;
     margin-inline: auto;
-  }
-
-  .single-summary {
-    margin-block-start: 1rem;
   }
 
   .single-content-wrap {
@@ -270,6 +294,23 @@ const { Content, headings } = await render()
       object-position: center;
       border-top-right-radius: 0.25rem;
       border-bottom-right-radius: 0.25rem;
+    }
+
+    :where(.twitter-tweet) {
+      margin-block: unset !important;
+      margin-inline: unset !important;
+    }
+
+    :where(.single-embed) {
+      display: var(--is-dark, none) var(--is-light, block);
+      max-inline-size: fit-content;
+      margin-inline: auto;
+      border-radius: 13px;
+      contain: content;
+
+      &[data-theme='dark'] {
+        display: var(--is-dark, block) var(--is-light, none);
+      }
     }
   }
 
