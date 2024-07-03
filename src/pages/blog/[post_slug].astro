@@ -101,7 +101,7 @@ const { Content, headings } = await render()
   }
 
   :is(.single-title, .single-summary) {
-    max-inline-size: fit-content;
+    inline-size: fit-content;
     margin-inline: auto;
   }
 
@@ -125,6 +125,8 @@ const { Content, headings } = await render()
   .single-title {
     --clamp-min: 20;
     --clamp-max: 40;
+
+    margin-block-start: 0.5rem;
   }
 
   .single-summary {
@@ -155,10 +157,13 @@ const { Content, headings } = await render()
     @container main (inline-size <= 940px) {
       grid-row: 2 / 3;
       grid-column: 1 / 2;
+      padding: 1rem;
       padding-block-start: unset;
     }
 
-    :where(*):not(:is(.rlc-container, .expressive-code, figure) *) {
+    :where(*):not(
+        :is(.rlc-container, .expressive-code, .single-comment, figure) *
+      ) {
       &:where(* + *) {
         margin-block-start: 1.5rem;
       }
@@ -311,6 +316,19 @@ const { Content, headings } = await render()
       &[data-theme='dark'] {
         display: var(--is-dark, block) var(--is-light, none);
       }
+    }
+
+    :where(.single-comment) {
+      --clamp-min: 12;
+      --clamp-max: 12;
+
+      display: block grid;
+      grid-template-columns: auto 1fr;
+      column-gap: 0.25rem;
+    }
+
+    :where(.single-comment) :where(svg) {
+      block-size: 1lh;
     }
   }
 
