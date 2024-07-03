@@ -24,5 +24,9 @@ const { ...attrs } = Astro.props
 
   .section-inner {
     padding: 2rem;
+
+    @container main (inline-size <= 430px) {
+      padding: 1rem;
+    }
   }
 </style>
