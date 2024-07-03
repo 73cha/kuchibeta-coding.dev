@@ -1,6 +1,6 @@
 ---
 title: fit-contentを使ったテキストの中央寄せ
-summary: レスポンシブデザインで役立つTipsです。
+summary: margin-inlineとの組み合わせで、レスポンシブデザインでよくある状況をスマートに解決します。
 publishedAt: '2024-07-02'
 updatedAt: '2024-07-03'
 tags:
@@ -9,14 +9,16 @@ tags:
 draft: false
 ---
 
+import Icon from '../../components/Icon.astro'
+
 ## text-alignを使った中央寄せの問題
-ビューポートが狭くなり折り返しが発生する場合、見た目的に不格好になってしまうことです。
-そのため、メディアクエリで`text-align`を`left`に戻す指定が必要になる場合があります。
+ビューポートが狭くなり折り返しが発生する場合、見た目が不格好になってしまうことです。
+そのため、メディアクエリで`text-align`を`left`に戻す指定が必要になってしまいます。
 レスポンシブデザインでは、よくある状況だと思います。
 
 <figure>
-  <img src="/images/blog/text-centering-with-fit-content/text-align-center.jpg" alt="文字の折り返しが発生して中央寄せだと不格好な様子" width="720" height="428" />
-  <figcaption>`text-align: center;`での指定</figcaption>
+<img src="/images/blog/text-centering-with-fit-content/text-align-center.jpg" alt="文字の折り返しが発生して中央寄せだと不格好な様子" width="720" height="428" />
+<figcaption>`text-align: center;`での指定</figcaption>
 </figure>
 
 <p class="u-visualy-hidden">`text-align: center;`を使った、問題のあるコードの記述例があります。</p>
@@ -26,7 +28,7 @@ draft: false
   text-align: center;
 }
 
-@media (width <= 375px) {
+@media (width <= {width}) {
   .text {
     text-align: left;
   }
@@ -43,17 +45,17 @@ draft: false
 
 https://developer.mozilla.org/ja/docs/Web/CSS/fit-content
 
-
 ## fit-contentの何が良いのか
 `text-align`での問題点を解消することができます。
 テキストの位置を変更していないので、不格好になることもありません。
 文字の面位置が揃って綺麗です。
 
 <figure>
-  <img src="/images/blog/text-centering-with-fit-content/fit-content.jpg" alt="文字が不揃いではなく、面位置が揃って綺麗な様子" width="720" height="420" />
-  <figcaption>`inline-size: fit-content;`での指定</figcaption>
+<img src="/images/blog/text-centering-with-fit-content/fit-content.jpg" alt="文字が不揃いではなく、面位置が揃って綺麗な様子" width="720" height="420" loading="lazy" />
+<figcaption>`inline-size: fit-content;`での指定</figcaption>
 </figure>
 
+### fit-contentを使ったコード
 メディアクエリが無くなり、記述量も少なくなりました。
 論理プロパティで記述していますが、通常のプロパティで書いても問題ありません。
 
@@ -76,17 +78,25 @@ https://developer.mozilla.org/ja/docs/Web/CSS/fit-content
 ```
 </div>
 
-通常のプロパティでの書き方はこちら。
+### 通常のプロパティを使ったコード
+通常のプロパティでの書き方はこちらです。
 
 <p class="u-visualy-hidden">`margin-inline`を使わない、通常のコードの記述例があります。</p>
 <div aria-hidden="true">
 ```css title=通常のプロパティでの記述
 .text {
-  inline-size: fit-content;
+  width: fit-content;
   margin-right: auto;
   margin-left: auto;
 }
 ```
+</div>
+
+<div class="single-comment">
+<Icon name="comment" size={24} />
+`margin`の指定でショートハンドを使うかはよく考えましょう。
+水平方向を`auto`にしたいがために、ショートハンドで`margin: 0 auto;`と書いているのを見かけます。
+本当に垂直方向を`0`にしていいのかは考えましょう。 個別の指定の方が副作用が起こらない可能性は高いです。
 </div>
 
 ## margin-inlineを巡る議論
@@ -95,22 +105,24 @@ https://developer.mozilla.org/ja/docs/Web/CSS/fit-content
 
 <p class="u-visualy-hidden">Xからの引用ツイート</p>
 <p class="u-visualy-hidden">前記事で要素のセンタリングにmargin-inline:auto紹介したら「margin-inlineは左右のショートハンドじゃねぇ！」ってマサカリめっちゃ飛んできたけど、そういう人に限ってアプローチは違えど同じく論理的に要素をセンタリングするjustify-content:centerに対して何も疑問を抱かないのは何でだろう🤔</p>
+
 <div class="single-embed" data-theme="dark" aria-hidden="true">
-  <blockquote class="twitter-tweet" data-theme="dark">
-    <p lang="ja" dir="ltr">
-      前記事で要素のセンタリングにmargin-inline:auto紹介したら「margin-inlineは左右のショートハンドじゃねぇ！」ってマサカリめっちゃ飛んできたけど、そういう人に限ってアプローチは違えど同じく論理的に要素をセンタリングするjustify-content:centerに対して何も疑問を抱かないのは何でだろう🤔
-    </p>
-    &mdash; TAK (@tak_dcxi)
-    <a href="https://twitter.com/tak_dcxi/status/1807949938472767517?ref_src=twsrc%5Etfw">July 2, 2024</a>
-  </blockquote>
+<blockquote class="twitter-tweet" data-theme="dark">
+<p lang="ja" dir="ltr">
+前記事で要素のセンタリングにmargin-inline:auto紹介したら「margin-inlineは左右のショートハンドじゃねぇ！」ってマサカリめっちゃ飛んできたけど、そういう人に限ってアプローチは違えど同じく論理的に要素をセンタリングするjustify-content:centerに対して何も疑問を抱かないのは何でだろう🤔
+</p>
+&mdash; TAK (@tak_dcxi)
+<a href="https://twitter.com/tak_dcxi/status/1807949938472767517?ref_src=twsrc%5Etfw">July 2, 2024</a>
+</blockquote>
 </div>
+
 <div class="single-embed" aria-hidden="true">
-  <blockquote class="twitter-tweet">
-    <p lang="ja" dir="ltr">
-      前記事で要素のセンタリングにmargin-inline:auto紹介したら「margin-inlineは左右のショートハンドじゃねぇ！」ってマサカリめっちゃ飛んできたけど、そういう人に限ってアプローチは違えど同じく論理的に要素をセンタリングするjustify-content:centerに対して何も疑問を抱かないのは何でだろう🤔
-    </p>
-    &mdash; TAK (@tak_dcxi) <a href="https://twitter.com/tak_dcxi/status/1807949938472767517?ref_src=twsrc%5Etfw">July 2, 2024</a>
-  </blockquote>
+<blockquote class="twitter-tweet">
+<p lang="ja" dir="ltr">
+前記事で要素のセンタリングにmargin-inline:auto紹介したら「margin-inlineは左右のショートハンドじゃねぇ！」ってマサカリめっちゃ飛んできたけど、そういう人に限ってアプローチは違えど同じく論理的に要素をセンタリングするjustify-content:centerに対して何も疑問を抱かないのは何でだろう🤔
+</p>
+&mdash; TAK (@tak_dcxi) <a href="https://twitter.com/tak_dcxi/status/1807949938472767517?ref_src=twsrc%5Etfw">July 2, 2024</a>
+</blockquote>
 </div>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
