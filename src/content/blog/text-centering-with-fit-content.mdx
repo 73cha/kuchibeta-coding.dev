@@ -9,7 +9,11 @@ tags:
 draft: false
 ---
 
+import {Picture} from 'astro:assets'
 import Icon from '../../components/Icon.astro'
+
+import img1 from '../../../public/images/blog/text-centering-with-fit-content/fit-content.jpg'
+import img2 from '../../../public/images/blog/text-centering-with-fit-content/text-align-center.jpg'
 
 ## text-alignを使った中央寄せの問題
 ビューポートが狭くなり折り返しが発生する場合、見た目が不格好になってしまうことです。
@@ -17,7 +21,7 @@ import Icon from '../../components/Icon.astro'
 レスポンシブデザインでは、よくある状況だと思います。
 
 <figure>
-<img src="/images/blog/text-centering-with-fit-content/text-align-center.jpg" alt="文字の折り返しが発生して中央寄せだと不格好な様子" width="720" height="428" />
+<Picture src={img1} formats={['webp']} alt="文字の折り返しが発生して中央寄せだと不格好な様子" />
 <figcaption>`text-align: center;`での指定</figcaption>
 </figure>
 
@@ -51,7 +55,7 @@ https://developer.mozilla.org/ja/docs/Web/CSS/fit-content
 文字の面位置が揃って綺麗です。
 
 <figure>
-<img src="/images/blog/text-centering-with-fit-content/fit-content.jpg" alt="文字が不揃いではなく、面位置が揃って綺麗な様子" width="720" height="420" loading="lazy" />
+<Picture src={img2} formats={['webp']} alt="文字が不揃いではなく、面位置が揃って綺麗な様子" />
 <figcaption>`inline-size: fit-content;`での指定</figcaption>
 </figure>
 
