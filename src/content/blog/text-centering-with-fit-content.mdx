@@ -10,10 +10,10 @@ draft: false
 ---
 
 import {Picture} from 'astro:assets'
-import Icon from '../../components/Icon.astro'
+import Icon from '@components/Icon.astro'
 
-import img1 from '../../../public/images/blog/text-centering-with-fit-content/fit-content.jpg'
-import img2 from '../../../public/images/blog/text-centering-with-fit-content/text-align-center.jpg'
+import img1 from '@public/images/blog/text-centering-with-fit-content/text-align-center.jpg'
+import img2 from '@public/images/blog/text-centering-with-fit-content/fit-content.jpg'
 
 ## text-alignを使った中央寄せの問題
 ビューポートが狭くなり折り返しが発生する場合、見た目が不格好になってしまうことです。
@@ -129,7 +129,6 @@ https://developer.mozilla.org/ja/docs/Web/CSS/fit-content
 </blockquote>
 </div>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
 
 MDNに`margin-inline`について分かりやすいサンプルがあります。
 
