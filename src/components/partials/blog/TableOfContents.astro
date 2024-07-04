@@ -44,13 +44,15 @@ const tocItems = (() => {
         tocItems.map((item) => (
           <li class="single-toc-parent-listitem">
             <a href={`#${item.slug}`}>{item.text}</a>
-            <ol class="single-toc-children">
-              {item.children.map((child) => (
-                <li class="single-toc-children-listitem">
-                  <a href={`#${child.slug}`}>{child.text}</a>
-                </li>
-              ))}
-            </ol>
+            {item.children.length > 0 && (
+              <ol class="single-toc-children">
+                {item.children.map((child) => (
+                  <li>
+                    <a href={`#${child.slug}`}>{child.text}</a>
+                  </li>
+                ))}
+              </ol>
+            )}
           </li>
         ))
       }
@@ -93,6 +95,7 @@ const tocItems = (() => {
     padding-block: 1rem;
     text-align: center;
     border: unset;
+    border-block-end: var(--border-style);
   }
 
   .single-toc-inner {
@@ -102,14 +105,14 @@ const tocItems = (() => {
   }
 
   .single-toc-parent-listitem {
-    border-block-start: var(--border-style);
+    margin-inline-start: 1rem;
+
+    &:first-of-type {
+      margin-block-start: 1rem;
+    }
   }
 
   .single-toc-children {
     padding-inline-start: 1rem;
-  }
-
-  .single-toc-children-listitem {
-    border-block-start: dotted 2px var(--border-color);
   }
 </style>
