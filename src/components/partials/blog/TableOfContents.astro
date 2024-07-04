@@ -74,12 +74,12 @@ const tocItems = (() => {
   }
 
   .single-toc :where(ol) {
-    list-style-position: inside;
+    list-style-position: outside;
     list-style-type: revert;
   }
 
   .single-toc :where(a) {
-    display: inline flow-root;
+    display: block;
     inline-size: calc(100% - 1.25rem);
     padding-block: 0.75rem;
     color: currentcolor;
@@ -99,10 +99,6 @@ const tocItems = (() => {
     position: sticky;
     inset-block-start: 3.5rem;
     inset-inline-start: 0;
-  }
-
-  .single-toc-parent {
-    --clamp-max: 14;
   }
 
   .single-toc-parent-listitem {
