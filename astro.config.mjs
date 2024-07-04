@@ -26,8 +26,6 @@ export default defineConfig({
       }
     }
   }), mdx(), sitemap(), compress({
-    // CSS: false,
-    // HTML: false,
     SVG: false
   })],
   server: {
