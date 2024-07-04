@@ -3,8 +3,9 @@ import expressiveCode from 'astro-expressive-code';
 import mdx from '@astrojs/mdx';
 import rlc from 'remark-link-card';
 import sitemap from '@astrojs/sitemap';
-
+import compress from "astro-compress";
 const isDev = import.meta.env.DEV;
+
 
 // https://astro.build/config
 export default defineConfig({
@@ -24,7 +25,11 @@ export default defineConfig({
         shadowColor: false
       }
     }
-  }), mdx(), sitemap()],
+  }), mdx(), sitemap(), compress({
+    // CSS: false,
+    // HTML: false,
+    SVG: false
+  })],
   server: {
     open: true
   }
