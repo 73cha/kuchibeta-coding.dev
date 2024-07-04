@@ -307,11 +307,15 @@ const { Content, headings } = await render()
     }
 
     :where(.single-embed) {
+      --_original-widget-width: 550px;
+
       display: var(--is-dark, none) var(--is-light, block);
-      max-inline-size: fit-content;
+
+      /* inline-sizeにfit-contentを使うとSafariで非表示になってしまう */
+      max-inline-size: var(--_original-widget-width);
       margin-inline: auto;
-      border-radius: 13px;
       contain: content;
+      border-radius: 13px;
 
       &[data-theme='dark'] {
         display: var(--is-dark, block) var(--is-light, none);
