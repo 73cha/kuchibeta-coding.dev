@@ -11,6 +11,10 @@ const { ...attrs } = Astro.props
 </div>
 
 <style>
+  /**
+   * `.container`だけ圧縮(astro-compress)すると、何故かネスト内の記述が消失するので、
+   * ネストを使わない記述にする
+   */
   .container {
     --_inline-size: 720px;
 
@@ -18,18 +22,20 @@ const { ...attrs } = Astro.props
     margin-inline: auto;
     border-inline-start: var(--border-style);
     border-inline-end: var(--border-style);
+  }
 
-    @container main (width <= 640px) {
+  @container main (width <= 640px) {
+    .container {
       border-inline-start: unset;
       border-inline-end: unset;
     }
+  }
 
-    &:where([data-size='medium']) {
-      --_inline-size: 1080px;
-    }
+  .container:where([data-size='medium']) {
+    --_inline-size: 1080px;
+  }
 
-    &:where([data-size='large']) {
-      --_inline-size: 1280px;
-    }
+  .container:where([data-size='large']) {
+    --_inline-size: 1280px;
   }
 </style>
