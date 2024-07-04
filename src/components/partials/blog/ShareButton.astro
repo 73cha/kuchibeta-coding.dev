@@ -74,7 +74,7 @@ const getShareUrl = (snsName: snsName) => {
     padding: 1rem;
     color: var(--c-white);
     text-decoration: unset;
-    background-color: hsl(var(--_background-color, 0deg 0 0%));
+    background-color: hsl(var(--_background-color, 0deg 0% 0%));
 
     &:where([data-is='facebook']) {
       --_background-color: 217deg 100% var(--hover-off, 52%)
@@ -87,7 +87,7 @@ const getShareUrl = (snsName: snsName) => {
     }
 
     &:where([data-is='x']) {
-      --_background-color: 0deg 0 var(--hover-off, 0) var(--hover-on, 25%);
+      --_background-color: 0deg 0% var(--hover-off, 0%) var(--hover-on, 25%);
     }
   }
 </style>
