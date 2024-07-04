@@ -1,10 +1,10 @@
 ---
-import '../css/index.css'
-import MobileMenu from '../components/MobileMenu.astro'
-import GlobalHeader from '../components/GlobalHeader.astro'
-import GlobalFooter from '../components/GlobalFooter.astro'
+import '@src/css/index.css'
+import MobileMenu from '@components/MobileMenu.astro'
+import GlobalHeader from '@components/GlobalHeader.astro'
+import GlobalFooter from '@components/GlobalFooter.astro'
 import { ViewTransitions } from 'astro:transitions'
-import Seo from '../components/Seo.astro'
+import Seo from '@components/Seo.astro'
 import type { ComponentProps, HTMLAttributes } from 'astro/types'
 
 type Props = ComponentProps<typeof Seo> & HTMLAttributes<'body'>

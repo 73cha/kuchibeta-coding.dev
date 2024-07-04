@@ -3,9 +3,9 @@ import type { HTMLAttributes } from 'astro/types'
 
 type Props = HTMLAttributes<'header'>
 
-import HamburgerMenu from './HamburgerMenu.astro'
-import MainNavigation from './MainNavigation.astro'
-import ThemeSwitch from './ThemeSwitch/ThemeSwitch.astro'
+import HamburgerMenu from '@components/HamburgerMenu.astro'
+import MainNavigation from '@components/MainNavigation.astro'
+import ThemeSwitch from '@components/ThemeSwitch/ThemeSwitch.astro'
 
 const { ...attrs } = Astro.props
 const siteNAME = import.meta.env.PUBLIC_SITE_NAME

@@ -1,8 +1,8 @@
 ---
 import type { HTMLAttributes } from 'astro/types'
 import { getIconData, iconToSVG, replaceIDs } from '@iconify/utils'
-import { iconifyJson } from '../iconLoader'
-import type { IconNames } from '../types/IconNames'
+import { iconifyJson } from '@src/iconLoader'
+import type { IconNames } from '@typings/IconNames'
 
 interface Props extends HTMLAttributes<'svg'> {
   name: IconNames
