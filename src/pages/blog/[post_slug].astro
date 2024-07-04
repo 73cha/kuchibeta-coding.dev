@@ -141,7 +141,7 @@ const { Content, headings } = await render()
 
   .single-content-wrap {
     display: grid;
-    grid-template-columns: minmax(min(0, 720px)) 1fr;
+    grid-template-columns: 1fr 360px;
 
     @container main (inline-size <= 940px) {
       grid-template-columns: unset;
