@@ -70,7 +70,7 @@ https://developer.mozilla.org/ja/docs/Web/CSS/fit-content
 -  text-align: center;
 - }
 -
-- @media (width <= 375px) {
+- @media (width <= {width}) {
 -  .text {
 -    text-align: left;
 -  }
@@ -100,7 +100,7 @@ https://developer.mozilla.org/ja/docs/Web/CSS/fit-content
 <Icon name="comment" size={24} />
 `margin`の指定でショートハンドを使うかはよく考えましょう。
 水平方向を`auto`にしたいがために、ショートハンドで`margin: 0 auto;`と書いているのを見かけます。
-本当に垂直方向を`0`にしていいのかは考えましょう。 個別の指定の方が副作用が起こらない可能性は高いです。
+本当に垂直方向を`0`にしていいのかは考えましょう。 個別の指定の方が副作用が起こりにくいです。
 </div>
 
 ## margin-inlineを巡る議論
