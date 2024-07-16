@@ -49,7 +49,7 @@ const end = period.end === '現在' ? period.end : getFullYear(period.end)
 
 <style>
   .career-item {
-    --_circle-size: 8px;
+    --_circle-size: 0.5rem;
 
     display: grid;
     grid-template-columns: auto 1fr;
@@ -59,11 +59,11 @@ const end = period.end === '現在' ? period.end : getFullYear(period.end)
       display: block flow;
       block-size: var(--_circle-size);
       aspect-ratio: 1;
+      margin-block: calc((1lh - var(--_circle-size)) / 2);
       content: '';
       background-color: var(--timeline-point-color-for-past);
       border: solid 2px var(--timeline-border-color-for-past);
       border-radius: 100vmax;
-      translate: 0 calc(var(--_circle-size));
     }
 
     &:last-of-type::before {
