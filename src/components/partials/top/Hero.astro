@@ -1,195 +1,35 @@
 <div class="hero u-grid-background-img">
-  <div class="hero-inner">
-    <p class="u-visualy-hidden">くちべたでスミマセン</p>
-    <div class="hero-keys" aria-hidden="true">
-      <span class="hero-key" translate="no">
-        <span class="hero-key-inner">
-          <span class="hero-key-front">く</span>
-          <span class="hero-key-bg"></span>
-        </span>
-      </span>
-      <span class="hero-key" translate="no">
-        <span class="hero-key-inner">
-          <span class="hero-key-front">ち</span>
-          <span class="hero-key-bg"></span>
-        </span>
-      </span>
-      <span class="hero-key" translate="no">
-        <span class="hero-key-inner">
-          <span class="hero-key-front">べ</span>
-          <span class="hero-key-bg"></span>
-        </span>
-      </span>
-      <span class="hero-key" translate="no">
-        <span class="hero-key-inner">
-          <span class="hero-key-front">た</span>
-          <span class="hero-key-bg"></span>
-        </span>
-      </span>
-      <span class="hero-key" translate="no">
-        <span class="hero-key-inner">
-          <span class="hero-key-front">で</span>
-          <span class="hero-key-bg"></span>
-        </span>
-      </span>
-      <span class="hero-key" translate="no">
-        <span class="hero-key-inner">
-          <span class="hero-key-front">ス</span>
-          <span class="hero-key-bg"></span>
-        </span>
-      </span>
-      <span class="hero-key" translate="no">
-        <span class="hero-key-inner">
-          <span class="hero-key-front">ミ</span>
-          <span class="hero-key-bg"></span>
-        </span>
-      </span>
-      <span class="hero-key" translate="no">
-        <span class="hero-key-inner">
-          <span class="hero-key-front">マ</span>
-          <span class="hero-key-bg"></span>
-        </span>
-      </span>
-      <span class="hero-key" translate="no">
-        <span class="hero-key-inner">
-          <span class="hero-key-front">セ</span>
-          <span class="hero-key-bg"></span>
-        </span>
-      </span>
-      <span class="hero-key" translate="no">
-        <span class="hero-key-inner">
-          <span class="hero-key-front">ン</span>
-          <span class="hero-key-bg"></span>
-        </span>
-      </span>
-    </div>
-    <p class="hero-text-en" lang="en">SORRY FOR NOT BEING A GOOD TALKER.</p>
-    <p class="hero-text-ja">
-      くちべたコーディングは、口下手なフリーランスのマークアップエンジニアです。
-    </p>
-  </div>
-</div>
+  <p class="hero-text-primary">時間と場所を越えて、成果で貢献します</p>
+  <p class="hero-text-secondary">
+    くちべたコーディングは、口下手なフリーランスのマークアップエンジニアです。
 
-<style>
-  .hero {
-    padding-block: 10rem;
-    background-color: var(--hero-background-color);
-    border-block-end: var(--border-style);
+    <style>
+      .hero {
+        padding-block: 10rem;
+        background-color: var(--hero-background-color);
+        border-block-end: var(--border-style);
 
-    @container main (width <= 940px) {
-      padding-block: 5rem;
-      padding-inline: 1rem;
-    }
-
-    span,
-    span::before,
-    span::after {
-      background-color: var(--hero-key-background-color);
-    }
-  }
-
-  .hero-inner {
-    max-inline-size: 960px;
-    margin-inline: auto;
-  }
-
-  .hero-keys {
-    --clamp-min: 24;
-    --clamp-max: 32;
-    --border-style: solid 1px currentcolor;
-
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    padding: calc(1rem + 2px);
-    overflow: hidden;
-    font-weight: bolder;
-
-    @container main (width <= 640px) {
-      grid-template-columns: repeat(5, 1fr);
-    }
-  }
-
-  .hero-key {
-    position: relative;
-    z-index: 1; /* keyが戻ってくるときに、hero-key-innerの疑似要素の重なり部分が見えてしまうので必要 */
-    aspect-ratio: 1;
-    margin-block: -1px;
-    margin-inline-start: -1px;
-    text-align: center;
-    user-select: none;
-    transition: translate 0.1s ease-out;
-
-    @media (any-hover: hover) {
-      &:hover {
-        translate: calc(1rem + 2px) calc(1rem + 1px);
+        @container main (width <= 940px) {
+          padding-block: 5rem;
+          padding-inline: 1rem;
+        }
       }
-    }
-  }
 
-  .hero-key-inner {
-    position: relative;
-    display: block flow;
-    inline-size: 100%;
-    block-size: 100%;
+      :is(.hero-text-primary, .hero-text-secondary) {
+        inline-size: fit-content;
+        margin-inline: auto;
+      }
 
-    &::before,
-    &::after {
-      position: absolute;
-      inset-inline-start: 1rem;
-      inline-size: 100%;
-      block-size: 1rem;
-      content: '';
-      transform: skew(45deg);
-      transform-origin: left bottom;
-    }
+      .hero-text-primary {
+        --clamp-min: 20;
+        --clamp-max: 40;
 
-    &::before {
-      inset-block-end: calc(-1rem - 1px);
-      border-block-end: var(--border-style);
-      border-inline-start: var(--border-style);
-    }
+        font-weight: bolder;
+      }
 
-    &::after {
-      inset-block-start: 0;
-      border-inline-end: var(--border-style);
-    }
-  }
-
-  .hero-key-front {
-    position: absolute;
-    z-index: 2;
-    display: block grid;
-    align-items: center;
-    inline-size: 100%;
-    block-size: 100%;
-    border: var(--border-style);
-  }
-
-  .hero-key-bg {
-    position: absolute;
-    inset-block-start: 1rem;
-    inset-inline-start: calc(1rem + 2px);
-    z-index: 1;
-    inline-size: 100%;
-    block-size: 100%;
-    border-inline-end: var(--border-style);
-  }
-
-  :is(.hero-text-en, .hero-text-ja) {
-    inline-size: fit-content;
-    margin-inline: auto;
-  }
-
-  .hero-text-en {
-    --clamp-min: 18;
-    --clamp-max: 20;
-
-    margin-block-start: 0.75rem;
-    color: var(--font-color-muted);
-  }
-
-  .hero-text-ja {
-    margin-block-start: 1.5rem;
-  }
-</style>
+      .hero-text-secondary {
+        margin-block-start: 1rem;
+      }
+    </style>
+  </p>
+</div>
