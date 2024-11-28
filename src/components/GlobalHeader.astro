@@ -48,7 +48,10 @@ const siteNAME = import.meta.env.PUBLIC_SITE_NAME
     --_inline-size-default: 1280px;
 
     display: block grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: minmax(max-content, 1fr) auto minmax(
+        max-content,
+        1fr
+      );
     place-content: center;
     max-inline-size: var(--_inline-size-default);
     block-size: 100%;
