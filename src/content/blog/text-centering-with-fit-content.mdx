@@ -26,7 +26,6 @@ import img2 from '@public/images/blog/text-centering-with-fit-content/fit-conten
 </figure>
 
 <p class="u-visualy-hidden">`text-align: center;`を使った、問題のあるコードの記述例があります。</p>
-<div aria-hidden="true">
 ```css title="🙅‍♂️ Not Recommend"
 .text {
   text-align: center;
@@ -38,7 +37,6 @@ import img2 from '@public/images/blog/text-centering-with-fit-content/fit-conten
   }
 }
 ```
-</div>
 
 ## fit-contentを知る
 `fit-content`とは、最小寸法・最大寸法がコンテンツの寸法になる指定です。
@@ -64,7 +62,6 @@ https://developer.mozilla.org/ja/docs/Web/CSS/fit-content
 論理プロパティで記述していますが、通常のプロパティで書いても問題ありません。
 
 <p class="u-visualy-hidden">`inline-size: fit-content;`を使った、スマートなコードの記述例があります。</p>
-<div aria-hidden="true">
 ```diff lang=css title="🙆‍♂️ Recommend"
 - .text {
 -  text-align: center;
@@ -80,13 +77,11 @@ https://developer.mozilla.org/ja/docs/Web/CSS/fit-content
 +   margin-inline: auto;
 + }
 ```
-</div>
 
 ### 通常のプロパティを使ったコード
 通常のプロパティでの書き方はこちらです。
 
 <p class="u-visualy-hidden">`margin-inline`を使わない、通常のコードの記述例があります。</p>
-<div aria-hidden="true">
 ```css title=通常のプロパティでの記述
 .text {
   width: fit-content;
@@ -94,7 +89,6 @@ https://developer.mozilla.org/ja/docs/Web/CSS/fit-content
   margin-left: auto;
 }
 ```
-</div>
 
 <div class="single-comment">
 <Icon name="comment" size={24} />
