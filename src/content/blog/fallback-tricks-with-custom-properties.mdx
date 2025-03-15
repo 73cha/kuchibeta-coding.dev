@@ -6,7 +6,7 @@ tags:
 - css
 - tips
 draft: false
-updatedAt: null
+updatedAt: '2025-03-16'
 ---
 
 import Icon from '@components/Icon.astro'
@@ -68,24 +68,19 @@ import Icon from '@components/Icon.astro'
   --hover-off: initial;
 }
 ```
-[2.2. Guaranteed-Invalid Values](https://www.w3.org/TR/css-variables/#guaranteed-invalid)
+[2.2. Guaranteed-Invalid Values](https://www.w3.org/TR/css-varｋables/#guaranteed-invalid)
 によると、カスタムプロパティにおける空文字は有効な値であり、
 `initial`を使うことで無効保証値と呼ばれる値にできるそうです。
 カスタムプロパティの初期値はこの値になるそうです。
 
-無効保証値について、完全に理解できているわけではないのですが、
-何らかの理由でカスタムプロパティを一時的に無効な値とするものではないかと解釈しています。
-カスタムプロパティの初期値がこの値ということからも、そうではないかと思います。
+ドキュメントを翻訳した一部に、
 
-`initial`で一時的に無効な値になってはいるが、
-カスタムプロパティの参照時に初期値をセットすることで、
-フォールバックが働いて有効化されるということではないかと思います。
+>何らかの理由で、変数を手動で無効保証値にリセットしたい場合は、キーワードinitialを使用することで可能です。
 
-保留にさせておき、オンデマンドで利用できるようにする感じでしょうか？
+と書かれています。
 
-難しく考えると混乱してくるので、
-単純に`initial`は`var()`で参照しているカスタムプロパティの初期値と考えることにしました。
-
+フォールバックトリックは、宣言の段階では`initial`で無効保証値としておき、オンデマンドで初期値を設定し、
+フォールバックによって値を有効化させるロジックだと理解しています。
 
 ### `:hover`の実装
 具体的な実装に入っていきます。
