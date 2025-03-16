@@ -162,10 +162,10 @@ const { Content, headings } = await render()
     }
 
     :where(*):not(
-        :is(.rlc-container, .expressive-code, .single-comment, figure) *
+        :is(.rlc-container, .expressive-code, .single-comment, figure, dl) *
       ) {
       &:where(* + *) {
-        margin-block-start: 1.5rem;
+        margin-block-start: 1rem;
       }
 
       &:where(* + h2) {
