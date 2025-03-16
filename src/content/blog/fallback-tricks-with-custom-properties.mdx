@@ -6,10 +6,8 @@ tags:
 - css
 - tips
 draft: false
-updatedAt: '2025-03-16'
+updatedAt: '2025-03-17'
 ---
-
-import Icon from '@components/Icon.astro'
 
 ## カスタムプロパティのフォールバックとは
 参照したカスタムプロパティが宣言されていなかったり、
@@ -28,8 +26,8 @@ import Icon from '@components/Icon.astro'
 このフォールバックの仕組みを使ったハック的な実装のことになります。
 
 ### 便利だと思うところ
-カスタムプロパティを定義しておき、オンデマンドでカスタムプロパティの上書きと、
-参照時に初期値を渡すことでDRYにできるところです。
+簡易的な`if`文のように使えるところです。
+条件式はカスタムプロパティの組み合わせで表現します。
 
 ### 注意
 **あまり浸透しているとは言えない実装になりますので、
@@ -49,18 +47,16 @@ import Icon from '@components/Icon.astro'
 ```
 
 ## 実装について
-この記事では、フォールバックトリックが効果的に利用できる、
-`:hover`擬似クラスでの実装をご紹介します。
+この記事では、フォールバックトリックが効果的に利用できる、`:hover`での実装をご紹介します。
 他にもテーマ切り替えの実装で効果的に利用できそうですので、
 こちらは後日に記事にしてみたいと思います。
 
 ### 方針
-`:hover`擬似クラスでグローバルに利用したいため、
-`:root`要素にグローバルなカスタムプロパティとして宣言します。
+`:hover`でグローバルに利用したいため、`:root`要素にカスタムプロパティとして宣言します。
 後に然るべきところで値をセットして上書きしていきます。
 
 ### カスタムプロパティの定義
-最初にグローバルなカスタムプロパティを定義します。実装の肝となる部分です。
+最初にスタムプロパティの定義をします。実装の肝となる部分です。
 
 ```css
 :root {
@@ -84,6 +80,10 @@ import Icon from '@components/Icon.astro'
 
 ### `:hover`の実装
 具体的な実装に入っていきます。
+後にブラッシュアップを行いますが、全体としては以下のような実装になります。
+
+冒頭で`if`分のように使えると書きましたので、
+併せて条件式も書いていこうと思います。
 
 ```css
 :root {
@@ -100,9 +100,13 @@ import Icon from '@components/Icon.astro'
   }
 }
 ```
-
 通常時では、`--hover-on`が空文字であり、`--hover-off`が`initial`のため、
 以下のように解釈されます。
+
+<dl>
+<dt>条件式</dt>
+<dd>`--hover-on === '' && --hover-off === initial`</dd>
+</dl>
 
 ```css
 :any-link {
@@ -115,6 +119,11 @@ import Icon from '@components/Icon.astro'
 
 ホバー時では、`--hover-off`が空文字であり、`--hover-on`が`initial`のため、
 以下のように解釈されます。
+
+<dl>
+<dt>条件式</dt>
+<dd>`--hover-on === initial && --hover-off === ''`</dd>
+</dl>
 
 ```css
 :any-link :hover {
@@ -147,6 +156,10 @@ import Icon from '@components/Icon.astro'
 }
 
 :where(:any-link) {
+  --_color: var(--hover-on, green) var(--hover-off, blue);
+
+  color: var(--_color);
+
   &:focus-visible {
     --hover-on: initial;
     --hover-off: ;
@@ -158,12 +171,6 @@ import Icon from '@components/Icon.astro'
       --hover-off: ;
     }
   }
-}
-
-:where(a) {
-  --_link-color: var(--hover-on, green) var(--hover-off, blue);
-
-  color: var(--_link-color);
 }
 ```
 
