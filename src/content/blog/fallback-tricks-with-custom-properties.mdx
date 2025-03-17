@@ -75,15 +75,16 @@ updatedAt: '2025-03-17'
 CSSのカスタムプロパティの値が計算時に無効であることを保証します。
 以下のような性質があるようです。
 
-[Invalid at computed-value time](https://www.matuzo.at/blog/2023/invalid-custom-properties)から引用
-> カスタムプロパティの宣言は、その値が無効な場合、計算値の時点で無効になることがあります。プロパティの型にもよるが、この場合、プロパティはunsetに設定されるので、プロパティが継承されているかどうかによって、プロパティの継承値か初期値のどちらかになる。
-
-[MDN Guaranteed-invalid value](https://developer.mozilla.org/en-US/docs/Glossary/guaranteed_invalid_value)から引用
 >カスタム・プロパティの値が無効保証値である場合、var() 関数はそれを置換に使用することはできません。そうしようとすると、有効なフォールバックが指定されていない限り、計算値の時点でその宣言は無効になります。
 
+[MDN Guaranteed-invalid value](https://developer.mozilla.org/en-US/docs/Glossary/guaranteed_invalid_value)から引用
+
 ### 無効保証値の性質を利用したテクニック
-海外では The Guaranteed-Invalid Value Hack として知られているようです。
+海外では <span translate="no">The Guaranteed-Invalid Value Hack</span> として知られているようです。
 カスタムプロパティに`initial`を設定して、`var()`にフォールバック値を使用させるテクニックを指します。
+
+一旦、無効な値としておき、後で評価し直す流れになります。仮にフォールバック値が無効な値だったとしても、
+そもそもが無効な値なので安全ということでしょうか。
 
 ### `:hover`の実装
 具体的な実装に入っていきます。
