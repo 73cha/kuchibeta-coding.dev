@@ -6,7 +6,7 @@ tags:
 - css
 - tips
 draft: false
-updatedAt: '2025-03-17'
+updatedAt: '2025-03-19'
 ---
 
 ## カスタムプロパティのフォールバックとは
@@ -63,8 +63,7 @@ updatedAt: '2025-03-17'
   --hover-off: initial;
 }
 ```
-
-[2.2. Guaranteed-Invalid Values](https://www.w3.org/TR/css-varｋables/#guaranteed-invalid)
+[2.2. Guaranteed-Invalid Values](https://www.w3.org/TR/css-variables-1/#guaranteed-invalid)
 によると、カスタムプロパティにおける空文字は有効な値であり、
 `initial`を使うことで無効保証値と呼ばれる値にできるそうです。
 
@@ -82,8 +81,15 @@ CSSのカスタムプロパティの値が計算時に無効であることを�
 海外では <span translate="no">The Guaranteed-Invalid Value Hack</span> として知られているようです。
 カスタムプロパティに`initial`を設定して、`var()`にフォールバック値を使用させるテクニックを指します。
 
-一旦、無効な値としておき、後で評価し直す流れになります。仮にフォールバック値が無効な値だったとしても、
-そもそもが無効な値なので安全ということでしょうか。
+`initial`を指定する理由は、開発者が意図的に無効保証値としたい場合にするものです。
+JavaScriptにも変数の宣言時に`null`を代入して初期化するテクニックがあります。
+この方法もそれと同様に、
+
+- 値の代入を待機する状態
+- 変数の意図を明示化
+
+という思想があるのではないかと推測します。
+
 
 ### `:hover`の実装
 具体的な実装に入っていきます。
