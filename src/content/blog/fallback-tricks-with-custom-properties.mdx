@@ -6,7 +6,7 @@ tags:
 - css
 - tips
 draft: false
-updatedAt: '2025-03-19'
+updatedAt: '2025-03-26'
 ---
 
 ## カスタムプロパティのフォールバックとは
@@ -16,7 +16,7 @@ updatedAt: '2025-03-19'
 
 以下の例は、`--color`が無効だった場合は`green`が適用されます。
 
-```css
+```css title="カスタムプロパティのフォールバックの例"
 .hoge {
   color: var(--color, green);
 }
@@ -35,9 +35,8 @@ updatedAt: '2025-03-19'
 ## 閑話休題
 カスタムプロパティのより良い命名規則をご紹介します。
 ローカルなカスタムプロパティは、`_`から始まるように宣言することでスコープの範囲が明確になります。
-また、命名を短く凡庸的なものにすることで、より一層の差別化が可能になります。
 
-```css
+```css title="ローカルなカスタムプロパティの命名"
 .hoge {
   --_color: green;
 
@@ -57,7 +56,7 @@ updatedAt: '2025-03-19'
 ### カスタムプロパティの定義
 最初にスタムプロパティの定義をします。実装の肝となる部分です。
 
-```css
+```css title="カスタムプロパティの定義"
 :root {
   --hover-on: ;
   --hover-off: initial;
@@ -95,7 +94,7 @@ JavaScriptにも変数の宣言時に`null`を代入して初期化するテク�
 具体的な実装に入っていきます。
 後にブラッシュアップを行いますが、全体としては以下のような実装になります。
 
-```css
+```css title="ブラッシュアップ前の実装"
 :root {
   --hover-on: ;
   --hover-off: initial;
@@ -114,7 +113,7 @@ JavaScriptにも変数の宣言時に`null`を代入して初期化するテク�
 通常時では、`--hover-on`が空文字であり、`--hover-off`が`initial`のため、
 以下のように解釈されます。
 
-```css
+```css title="通常時の場合"
 :any-link {
   --hover-on: ;
   --hover-off: initial;
@@ -126,7 +125,7 @@ JavaScriptにも変数の宣言時に`null`を代入して初期化するテク�
 ホバー時では、`--hover-off`が空文字であり、`--hover-on`が`initial`のため、
 以下のように解釈されます。
 
-```css
+```css title="ホバー時の場合"
 :any-link:hover {
   --hover-on: initial;
   --hover-off: ;
@@ -148,9 +147,16 @@ JavaScriptにも変数の宣言時に`null`を代入して初期化するテク�
 ベースになるCSSに記述する内容となりますので、`:where`を使って詳細度を0に保ち、
 後のCSSで上書きしやすくすると良いかと思います。
 
-[Codepenのデモはこちら](https://codepen.io/73log/pen/KwKZyyg)
+<figure class="codepen-embed">
+<figcaption>CODEPENのデモ</figcaption>
+<p class="codepen" data-height="300" data-default-tab="html,result" data-slug-hash="KwKZyyg" data-pen-title="カスタムプロパティのフォールバックトリック" data-user="73log" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+<span>See the Pen <a href="https://codepen.io/73log/pen/KwKZyyg">
+カスタムプロパティのフォールバックトリック</a> by Katuhisa Namizaki (<a href="https://codepen.io/73log">@73log</a>)
+on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+</figure>
 
-```css
+```css title="ブラッシュアップ後の実装"
 :where(:root) {
   --hover-on: ;
   --hover-off: initial;
