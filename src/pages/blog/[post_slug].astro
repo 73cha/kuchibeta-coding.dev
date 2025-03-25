@@ -176,7 +176,7 @@ const { Content, headings } = await render()
         margin-block-start: 2.5rem;
       }
 
-      &:where(* + .rlc-container) {
+      &:where(* + :is(.rlc-containere, .expressive-code, .codepen-embed)) {
         margin-block: 2rem 2rem;
       }
     }
@@ -203,7 +203,7 @@ const { Content, headings } = await render()
       margin-block: 2rem 2rem;
     }
 
-    :where(figcaption) {
+    :where(figcaption:not(.codepen-embed figcaption)) {
       --clamp-max: 14;
 
       margin-block-start: 0.5rem;
@@ -334,6 +334,18 @@ const { Content, headings } = await render()
     :where(.single-comment) :where(svg) {
       block-size: 1lh;
     }
+
+    :where(.codepen-embed) :where(figcaption) {
+      --clamp-min: 12;
+      --clamp-max: 12;
+
+      inline-size: fit-content;
+      padding: 0.5rem;
+      color: var(--c-white);
+      background-color: var(--c-dark-23);
+      border-start-start-radius: 5px;
+      border-start-end-radius: 5px;
+    }
   }
 
   .single-share-buttons {
@@ -352,3 +364,5 @@ const { Content, headings } = await render()
     }
   }
 </style>
+
+<script async src="https://public.codepenassets.com/embed/index.js"></script>
