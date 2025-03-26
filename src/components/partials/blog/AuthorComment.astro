@@ -1,0 +1,27 @@
+---
+import Icon from '@components/Icon.astro'
+
+interface Props {
+  size: number
+}
+---
+
+<div class="single-author-comment">
+  <Icon name="comment" size={24} />
+  <slot />
+</div>
+
+<style>
+  .single-author-comment {
+    --clamp-min: 12;
+    --clamp-max: 12;
+
+    display: block grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 0.25rem;
+  }
+
+  .single-author-comment :where(svg) {
+    block-size: 1lh;
+  }
+</style>
