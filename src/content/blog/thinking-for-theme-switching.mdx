@@ -1,0 +1,212 @@
+---
+title: 'テーマ切替の実装について考えてみる'
+summary: 'テーマ切り替えの実装について考えてみます。カスタムプロパティのフォールバックトリックを使った、テーマ切替時に役に立つかもしれないTIPSもご紹介します。'
+publishedAt: '2025-03-26'
+tags:
+- css
+- tips
+draft: false
+updatedAt: null
+---
+
+import AuthorComment from '@components/partials/blog/AuthorComment.astro'
+
+## ちょっと長い前置き
+TIPSのご紹介に入る前に、ちょっと長い前置きとして、テーマ切り替えの実装について触れていきます。
+問題点やモダンな方法をご紹介します。
+
+### テーマ切替の実装方法
+以下の2通りが考えられます。
+
+ボタンなどのクリックでの動的な切替の場合は、
+`:root`のstyle属性に、`--theme: dark;`の様なカスタムプロパティを渡すことで実装します。
+
+動的な切替方法は、ユーザー環境を強制的に切替えるとも捉えられるので、
+賛否両論がある実装方法とも言えると思います。
+
+```css title="動的な切替"
+:root[style*='--theme: light;'] {
+  --font-color: black;
+}
+
+:root[style*='--theme: dark;'] {
+  --font-color: white;
+}
+
+body {
+  color: var(--font-color);
+}
+```
+
+システム設定に従う場合は、`@media`でテーマの実装をします。
+こちらはユーザー環境を優先した指定です。
+
+```scss title="システム設定に従う切替"
+:root {
+  color-scheme: light dark;
+
+  @media (prefers-color-scheme: light) {
+    --font-color: black;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    --font-color: white;
+  }
+}
+
+body {
+  color: var(--font-color);
+}
+```
+
+### 問題点
+いづれの方法にせよ、重複したカスタムプロパティが存在するため、メンテナブルとは言いづらい状況です。
+ウェブサイトやアプリケーションの成長に伴って、重複箇所も増えていくので辛くなっていきます。
+
+### 救世主の登場
+[CSS Color Module Level 5](https://www.w3.org/TR/css-color-5/#funcdef-light-dark)
+で定義されている、`light-dark()`の登場により風向きが変わってきました。
+
+[MDN: light-dark()](https://developer.mozilla.org/ja/docs/Web/CSS/color_value/light-dark)を見ると、
+[Baseline](https://developer.mozilla.org/ja/docs/Glossary/Baseline/Compatibility)
+のNEWLY AVAILABLEになっていますので、
+モダンブラウザでは利用可能な機能になっています。
+
+以下のように書き換えることができます。
+重複したカスタムプロパティがなくなりスッキリしました。
+また、`light-dark`という分かりやすい命名なので、コードの意図が明確になりました。
+
+導入にあたっては、`color-scheme: light dark;`の指定は必須になります。
+
+```css title="light-darkを使った実装例"
+:root {
+  --font-color: light-dark(black, white);
+
+  color-scheme: light dark;
+}
+
+body {
+  color: var(--font-color);
+}
+```
+
+デザイントークンとして色を管理するかと思いますので、
+ハードコーディングするよりも、カスタムプロパティとして管理するほうが好ましいです。
+
+カスタムプロパティをテーマごとに管理するコストは発生しますが、
+断然、こちらのほうが良いコードになると思います。
+
+```css title="light-darkで色を管理する例"
+:root {
+  --light-font-color: black;
+  --dark-font-color: white;
+  --font-color: light-dark(var(--light-font-color), var(--dark-font-color));
+
+  color-scheme: light dark;
+}
+
+body {
+  color: var(--font-color);
+}
+```
+
+動的に切替える場合は、`color-scheme`の値を`dark`か`light`に指定し直します。
+ざっくりした例ではありますが、以下のようなコードで実装できるかと思います。
+
+```js title="color-schemeを動的に切替えるアイデア"
+const root = document.documentElement
+
+root.style.setProperty('color-scheme', 'dark') // or 'light'
+```
+
+### light-darkでは出来ないこと
+`light-dark()`は、CSSで`<color>`として定義されているものしか指定できません。
+テーマ毎にアイコンを切替えたいなどといったことはできません。
+構文は以下のとおりです。
+
+```lang="" title="light-darkの構文"
+light-dark() = light-dark(<color>, <color>)
+```
+
+CSSで`<color>`として定義されているものの代表例です。
+- キーワード
+- 16進数のカラーコード
+- `rgb()`, `hsl()`, `hwb()`, `lab()`, `oklab()`, `lch()`, `oklch()`
+- 相対カラー構文
+
+## TIPSのご紹介
+テーマ切り替えにおいての、カスタムプロパティのフォールバックトリックの使い所をご紹介していきます。
+
+### 前提条件
+`light-dark()`では、色以外を指定することができないため、
+カスタムプロパティを使ったベーシックなロジックで実装します。
+
+ただ、策定が進んでいる[CSS Functions and Mixins Module](https://drafts.csswg.org/css-mixins-1/)
+が勧告されることがあれば、この問題も解決できそうです。
+(色以外も指定することが可能な、`light-dark()`を定義可能になるため)
+
+### 実装例
+このようにフォールバックトリックを利用すると、テーマ毎にアイコンを切り替えるなどといった実装が可能になります。
+`light-dark()`を補助するような使い方として便利かもしれません。
+
+動的な切替は、`--theme`の値を切り替えることで実装します。
+ユーザー環境ファーストな切替は、`@media`でシステム設定に従って実装します。
+
+```scss title="フォールバックトリックを使ったアイコン切替"
+/* 動的切替えな実装 */
+:root[style*='--theme: light;'] {
+  --is-light: initial;
+  --is-dark: ;
+}
+
+:root[style*='--theme: dark;'] {
+  --is-light: ;
+  --is-dark: initial;
+}
+
+/* ユーザー環境ファーストな実装 */
+:root {
+  color-scheme: light dark;
+
+  @media (prefers-color-scheme: light) {
+    --is-light: initial;
+    --is-dark: ;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    --is-light: ;
+    --is-dark: initial;
+  }
+}
+
+/* 共通 */
+.example-icon {
+  inline-size: 24px;
+  aspect-ratio: 1;
+  background-repeat: no-repeat;
+  background-image: var(--is-light, url('...')) var(--is-dark, url('...'));
+}
+```
+
+### デモ
+動的に切り替えるパターンのデモを作ってみました。
+
+<figure class="codepen-embed">
+<figcaption>
+フォールバックトリックでアイコン切り替え
+</figcaption>
+<p class="codepen" data-height="300" data-default-tab="html,result" data-slug-hash="PwodoNb" data-pen-title="Untitled" data-user="73log" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+<span>See the Pen <a href="https://codepen.io/73log/pen/PwodoNb">
+Untitled</a> by Katuhisa Namizaki (<a href="https://codepen.io/73log">@73log</a>)
+on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+</figure>
+
+## おわりに
+テーマ切り替えの実装についてや、フォールバックトリックを使ったTIPSをご紹介しました。
+
+テーマ切り替えについては、各社のUXに対する考えが現れる部分ではないでしょうか？
+ユーザーファーストな実装か、オプショナルな実装かは、テーマ切り替えに限らず言えることですので、
+配慮した実装を心がけていきたいものです。
+
+以上になります。
