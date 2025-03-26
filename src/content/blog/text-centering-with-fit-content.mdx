@@ -11,6 +11,7 @@ draft: false
 
 import {Picture} from 'astro:assets'
 import Icon from '@components/Icon.astro'
+import AuthorComment from '@components/partials/blog/AuthorComment.astro'
 
 import img1 from '@public/images/blog/text-centering-with-fit-content/text-align-center.jpg'
 import img2 from '@public/images/blog/text-centering-with-fit-content/fit-content.jpg'
@@ -25,7 +26,6 @@ import img2 from '@public/images/blog/text-centering-with-fit-content/fit-conten
 <figcaption>`text-align: center;`での指定</figcaption>
 </figure>
 
-<p class="u-visualy-hidden">`text-align: center;`を使った、問題のあるコードの記述例があります。</p>
 ```css title="🙅‍♂️ Not Recommend"
 .text {
   text-align: center;
@@ -42,10 +42,9 @@ import img2 from '@public/images/blog/text-centering-with-fit-content/fit-conten
 `fit-content`とは、最小寸法・最大寸法がコンテンツの寸法になる指定です。
 `inline-block`の様に、対象の内容量に沿った寸法になります。
 
-<p class="u-visualy-hidden">MDNからの`fit-content`の概要の引用</p>
 > `width`, `height`, `min-width`, `min-height`, `max-width`, `max-height` のレイアウトされたボックスの大きさとして使用される場合、最大寸法と最小寸法は、コンテンツの寸法を参照します。
 
-https://developer.mozilla.org/ja/docs/Web/CSS/fit-content
+<p class="single-blockquote-origin">[MDN fit-content](https://developer.mozilla.org/ja/docs/Web/CSS/fit-content)から引用</p>
 
 ## fit-contentの何が良いのか
 `text-align`での問題点を解消することができます。
@@ -81,7 +80,6 @@ https://developer.mozilla.org/ja/docs/Web/CSS/fit-content
 ### 通常のプロパティを使ったコード
 通常のプロパティでの書き方はこちらです。
 
-<p class="u-visualy-hidden">`margin-inline`を使わない、通常のコードの記述例があります。</p>
 ```css title=通常のプロパティでの記述
 .text {
   width: fit-content;
@@ -90,12 +88,11 @@ https://developer.mozilla.org/ja/docs/Web/CSS/fit-content
 }
 ```
 
-<div class="single-comment">
-<Icon name="comment" size={24} />
+<AuthorComment>
 `margin`の指定でショートハンドを使うかはよく考えましょう。
 水平方向を`auto`にしたいがために、ショートハンドで`margin: 0 auto;`と書いているのを見かけます。
 本当に垂直方向を`0`にしていいのかは考えましょう。 個別の指定の方が副作用が起こりにくいです。
-</div>
+</AuthorComment>
 
 ## margin-inlineを巡る議論
 `margin-inline`は`margin-(left|right)`と同じではありません。
