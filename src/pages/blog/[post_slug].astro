@@ -162,10 +162,18 @@ const { Content, headings } = await render()
     }
 
     :where(*):not(
-        :is(.rlc-container, .expressive-code, .single-comment, figure, dl, ul) *
+        :is(
+            .rlc-container,
+            .expressive-code,
+            .single-author-comment,
+            figure,
+            dl,
+            ul
+          )
+          *
       ) {
       &:where(* + *) {
-        margin-block-start: 1rem;
+        margin-block-start: 1.5rem;
       }
 
       &:where(* + h2) {
@@ -176,8 +184,16 @@ const { Content, headings } = await render()
         margin-block-start: 2.5rem;
       }
 
-      &:where(* + :is(.rlc-containere, .expressive-code, .codepen-embed)) {
-        margin-block: 2rem 2rem;
+      &:where(
+          :is(
+              .single-author-comment,
+              .single-blockquote-origin,
+              h2 + *,
+              h3 + *,
+              h4 + *
+            )
+        ) {
+        margin-block-start: 1rem;
       }
     }
 
@@ -320,19 +336,6 @@ const { Content, headings } = await render()
       &[data-theme='dark'] {
         display: var(--is-dark, block) var(--is-light, none);
       }
-    }
-
-    :where(.single-comment) {
-      --clamp-min: 12;
-      --clamp-max: 12;
-
-      display: block grid;
-      grid-template-columns: auto 1fr;
-      column-gap: 0.25rem;
-    }
-
-    :where(.single-comment) :where(svg) {
-      block-size: 1lh;
     }
 
     :where(.codepen-embed) :where(figcaption) {
