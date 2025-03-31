@@ -9,17 +9,18 @@ import TagList from '@components/TagList.astro'
 import TableOfContents from '@components/partials/blog/TableOfContents.astro'
 import ShareButton from '@components/partials/blog/ShareButton.astro'
 import Icon from '@components/Icon.astro'
+import Hero from '@components/Hero.astro'
 
 export const getStaticPaths = (async () => {
   const blogCollection = await getCollection('blog')
 
   return blogCollection.map(({ slug }) => ({
-    params: { post_slug: slug },
+    params: { article_slug: slug },
   }))
 }) satisfies GetStaticPaths
 
-const { post_slug } = Astro.params
-const { data, render } = await getEntry('blog', post_slug)
+const { article_slug } = Astro.params
+const { data, render } = await getEntry('blog', article_slug)
 const { title, publishedAt, updatedAt, summary, tags } = data
 const { Content, headings } = await render()
 ---
@@ -28,39 +29,45 @@ const { Content, headings } = await render()
   title={title}
   description={summary}
   seo={{
-    url: `blog/${post_slug}`,
+    url: `articles/${article_slug}`,
     imgUrl: 'ogp-blog.png',
     publishedAt: publishedAt,
     schemaType: 'BlogPosting',
   }}
 >
   <article class="single">
-    <div class="single-title-wrap u-grid-background-img">
-      <div class="single-date-wrap">
-        <p class="single-publishedAt">
-          <span class="u-visualy-hidden">投稿日</span>
-          <time datetime={publishedAt}>
-            {publishedAt}
-          </time>
-        </p>
-        {
-          updatedAt && (
-            <p class="single-updatedAt">
-              <Icon name="update" size={20} />
-              <span class="u-visualy-hidden">更新日</span>
-              <time datetime={updatedAt}>{updatedAt}</time>
-            </p>
-          )
-        }
-      </div>
-      <hgroup>
-        <h1 class="single-title">{title}</h1>
-        <p class="single-summary">{summary}</p>
-      </hgroup>
-      <div class="single-tags">
-        <TagList tags={tags} />
-      </div>
-    </div>
+    <Hero>
+      <Fragment slot="date">
+        <div class="single-date-wrap">
+          <p class="single-publishedAt">
+            <span class="u-visualy-hidden">投稿日</span>
+            <time datetime={publishedAt}>
+              {publishedAt}
+            </time>
+          </p>
+          {
+            updatedAt && (
+              <p class="single-updatedAt">
+                <Icon name="update" size={20} />
+                <span class="u-visualy-hidden">更新日</span>
+                <time datetime={updatedAt}>{updatedAt}</time>
+              </p>
+            )
+          }
+        </div>
+      </Fragment>
+      <Fragment slot="title">
+        {title}
+      </Fragment>
+      <Fragment slot="subTitle">
+        {summary}
+      </Fragment>
+      <Fragment slot="tags">
+        <div class="single-tags">
+          <TagList tags={tags} />
+        </div>
+      </Fragment>
+    </Hero>
     <Container data-size="medium">
       <div class="single-content-wrap">
         <TableOfContents headings={headings} />
@@ -72,13 +79,13 @@ const { Content, headings } = await render()
         <h2>記事を共有する</h2>
         <ul class="single-share-buttons">
           <li>
-            <ShareButton shareOn="x" text={summary} slug={post_slug} />
+            <ShareButton shareOn="x" text={summary} slug={article_slug} />
           </li>
           <li>
-            <ShareButton shareOn="hatena" slug={post_slug} />
+            <ShareButton shareOn="hatena" slug={article_slug} />
           </li>
           <li>
-            <ShareButton shareOn="facebook" slug={post_slug} />
+            <ShareButton shareOn="facebook" slug={article_slug} />
           </li>
         </ul>
       </section>
@@ -89,7 +96,7 @@ const { Content, headings } = await render()
 
 <style>
   .single-title-wrap {
-    padding-block: 7rem;
+    padding-block: 7.7rem;
     margin-block-end: -1px;
     background-color: var(--hero-background-color);
     border-block-end: var(--border-style);
