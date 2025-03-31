@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content'
 
 import Section from '@components/Section.astro'
-import CareerItem from '@partials/top/CareerItem.astro'
+import CareerItem from '@partials/about/CareerItem.astro'
 
 const careerCollection = await getCollection('career')
 const carrers = careerCollection.sort((a, b) =>

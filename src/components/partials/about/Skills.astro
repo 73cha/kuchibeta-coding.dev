@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content'
 
 import Section from '@components/Section.astro'
-import SkillItem from '@partials/top/SkillItem.astro'
+import SkillItem from '@partials/about/SkillItem.astro'
 
 const skillCollection = await getCollection('skill')
 const skills = skillCollection.sort((a, b) =>

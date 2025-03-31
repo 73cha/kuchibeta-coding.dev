@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content'
 
 import Section from '@components/Section.astro'
-import ResultItem from '@partials/top/ResultItem.astro'
+import ResultItem from '@partials/about/ResultItem.astro'
 
 const resultCollection = await getCollection('result')
 const results = resultCollection.sort((a, b) =>
