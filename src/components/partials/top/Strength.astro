@@ -3,8 +3,9 @@ import Section from '@components/Section.astro'
 import Icon from '@components/Icon.astro'
 ---
 
-<Section id="strength" data-is="strength" data-no-gutter>
-  <h2>強み</h2>
+<Section id="strength" data-has-gutter="false">
+  <h2>サービスの強み</h2>
+
   <Fragment slot="content">
     <ul class="strength-list">
       <li class="strength-listitem">
@@ -14,7 +15,8 @@ import Icon from '@components/Icon.astro'
             コード品質
           </h3>
           <p>
-            一人称でマークアップからフレームワークでの実装を完結できるため、一貫性、堅牢性の高いコードを提供します。
+            一人称でマークアップからフレームワークでの実装を完結できるため、
+            一貫性、堅牢性の高いコードを提供します。
           </p>
         </section>
         <li class="strength-listitem">
@@ -24,7 +26,8 @@ import Icon from '@components/Icon.astro'
               アクセシビリティ
             </h3>
             <p>
-              多くの人がウェブサイトを利用できるように、最大限アクセシビリティに配慮したコーディングをします。
+              多くの人がウェブサイトを利用できるように、
+              最大限アクセシビリティに配慮したコーディングをします。
             </p>
           </section>
         </li>
@@ -35,7 +38,9 @@ import Icon from '@components/Icon.astro'
               Jamstack
             </h3>
             <p>
-              Jamstackでのウェブサイト制作が可能です。microCMSを利用した実績があり、Astroを使って静的生成します。
+              Jamstackでのウェブサイト制作が可能です。
+              WordPressに頼らない、データ構造とフレームワークを分離した、
+              疎結合な実装が可能です。
             </p>
           </section>
         </li>
