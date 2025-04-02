@@ -5,19 +5,22 @@ interface Props extends HTMLAttributes<'nav'> {
   title: string
 }
 
-const { pathname } = Astro.url
-const [root, _sub] = pathname.split('/').filter((path) => path)
+const { article_slug } = Astro.params
 const { title, ...attrs } = Astro.props
 ---
 
 <nav class="breadcrumbs" aria-label="パンくずリスト" {...attrs}>
   <ol class="breadcrumbs-list">
     <li class="breadcrumbs-listitem">
-      <a href="/">トップ</a>
+      <a href="/">ホーム</a>
     </li>
-    <li class="breadcrumbs-listitem">
-      {root === 'blog' && <a href="/#blog">ブログ</a>}
-    </li>
+    {
+      article_slug && (
+        <li class="breadcrumbs-listitem">
+          <a href="/blog">ブログ</a>
+        </li>
+      )
+    }
     <li class="breadcrumbs-listitem" aria-current="page">
       <span class="u-visualy-hidden">
         現在、閲覧中のページは、{title}です。
