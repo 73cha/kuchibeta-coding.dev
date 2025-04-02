@@ -8,30 +8,21 @@ import Seo from '@components/Seo.astro'
 import type { ComponentProps, HTMLAttributes } from 'astro/types'
 
 type Props = ComponentProps<typeof Seo> & HTMLAttributes<'body'>
-type RootName = keyof typeof rootNames
 
-const rootNames = {
-  blog: 'ブログ',
-}
 const siteName = import.meta.env.PUBLIC_SITE_NAME
 const { title, description, seo, ...attrs } = Astro.props
 const { pathname } = Astro.url
-
+const { post_slug } = Astro.params
 const titleTemplate = (title: string) => {
   if (pathname === '/') {
     return title
   }
 
-  const paths = pathname.split('/').filter((path) => path)
-  const [root, _sub] = paths
-
-  const rootName = root as RootName
-
-  if (!rootNames[rootName]) {
-    return `${title} | ${siteName}`
+  if (post_slug) {
+    return `${title} | ブログ | ${siteName}`
   }
 
-  return `${title} | ${rootNames[rootName]} | ${siteName}`
+  return `${title} | ${siteName}`
 }
 ---
 
@@ -66,25 +57,11 @@ const titleTemplate = (title: string) => {
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap"
     />
     <link
-      rel="preload"
-      as="style"
-      fetchpriority="high"
-      href=`https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500&text=${encodeURIComponent(siteName)}&display=swap`
-      rel="stylesheet"
-    />
-    <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&&display=swap"
       media="print"
       onload="this.media='all'"
     />
-    <link
-      rel="stylesheet"
-      href=`https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500&text=${encodeURIComponent(siteName)}&display=swap`
-      media="print"
-      onload="this.media='all'"
-    />
-
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-BX4HB2CTDJ"
