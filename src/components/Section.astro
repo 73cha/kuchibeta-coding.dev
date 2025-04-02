@@ -10,7 +10,7 @@ const { ...attrs } = Astro.props
   記事内でも再利用したいため、h2見出しはデフォルトスロットにする
   見出しから目次を生成するには、メタ文字がエスケープされない、デフォルトスロットである必要がある
 -->
-<section class="section" {...attrs}>
+<section class="section" class:list={[attrs.class]} {...attrs}>
   <slot />
   <div class="section-inner">
     <slot name="content" />
@@ -18,7 +18,7 @@ const { ...attrs } = Astro.props
 </section>
 
 <style>
-  .section:where([data-no-gutter]) :where(.section-inner) {
+  .section:is([data-has-gutter='false']) :where(.section-inner) {
     padding: unset;
   }
 
