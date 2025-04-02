@@ -10,8 +10,9 @@ const carrers = careerCollection.sort((a, b) =>
 )
 ---
 
-<Section id="career">
+<Section>
   <h2>経歴</h2>
+
   <Fragment slot="content">
     <div class="career-inner">
       {carrers.map((career) => <CareerItem career={career} />)}
