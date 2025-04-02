@@ -15,6 +15,7 @@ export default defineConfig({
       shortenUrl: true
     }]]
   },
+  trailingSlash: 'never',
   integrations: [expressiveCode({
     themes: ['dark-plus', 'light-plus'],
     themeCssRoot: '.expressive-code',
