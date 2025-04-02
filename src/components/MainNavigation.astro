@@ -5,17 +5,12 @@ type Props = HTMLAttributes<'nav'>
 
 const { ...attrs } = Astro.props
 const listItems = [
-  {
-    label: 'ブログ',
-    href: '/#blog',
-    isCurrent: Astro.url.pathname.includes('blog'),
-  },
-  { label: '自己紹介', href: '/#intro' },
-  { label: '強み', href: '/#strength' },
-  { label: '経歴', href: '/#career' },
-  { label: 'スキル', href: '/#skills' },
-  { label: '実績', href: '/#results' },
+  { label: 'ホーム', href: '/' },
+  { label: '私について', href: '/about' },
+  { label: 'ブログ', href: '/blog' },
+  { label: 'お問い合わせ', href: '/contact' },
 ]
+const { pathname } = Astro.url
 ---
 
 <nav {...attrs}>
@@ -26,7 +21,7 @@ const listItems = [
           <a
             class="listitem-link"
             href={listItem.href}
-            data-is-current={listItem.isCurrent ? 'true' : 'false'}
+            data-is-current={listItem.href === pathname ? 'true' : 'false'}
           >
             {listItem.label}
           </a>
@@ -47,11 +42,6 @@ const listItems = [
   :is(.global-nav, .global-footer-nav, .mobile-menu-nav) :where(a) {
     text-decoration: unset;
 
-    &[data-is-current='true'] {
-      color: var(--link-color);
-      pointer-events: none;
-    }
-
     @media (any-hover: hover) {
       &:hover {
         color: var(--link-color);
@@ -60,6 +50,11 @@ const listItems = [
 
     &:focus-visible {
       color: var(--link-color);
+    }
+
+    &[data-is-current='true'] {
+      color: var(--link-color);
+      pointer-events: none;
     }
   }
 
