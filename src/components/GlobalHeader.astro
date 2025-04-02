@@ -6,6 +6,7 @@ type Props = HTMLAttributes<'header'>
 import HamburgerMenu from '@components/HamburgerMenu.astro'
 import MainNavigation from '@components/MainNavigation.astro'
 import ThemeSwitch from '@components/ThemeSwitch/ThemeSwitch.astro'
+import Icon from './Icon.astro'
 
 const { ...attrs } = Astro.props
 const siteNAME = import.meta.env.PUBLIC_SITE_NAME
@@ -13,9 +14,10 @@ const siteNAME = import.meta.env.PUBLIC_SITE_NAME
 
 <header class="global-header" {...attrs}>
   <div class="global-header-inner">
-    <h1 class="global-header-logo">
+    <div class="global-header-logo">
+      <Icon name="comment" width={24} hanging={24} title="ロゴのアイコン" />
       <a href="/">{siteNAME}</a>
-    </h1>
+    </div>
     <div class="global-header-nav-wrap">
       <MainNavigation
         class="global-nav"
@@ -61,11 +63,12 @@ const siteNAME = import.meta.env.PUBLIC_SITE_NAME
   .global-header-logo {
     --clamp-min: 16;
     --clamp-max: 18;
-    --_ff-marugo: 'Zen Maru Gothic', sans-serif;
 
-    align-self: center;
-    font-family: var(--_ff-marugo);
-    font-feature-settings: 'palt';
+    display: block grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 0.25rem;
+    align-items: center;
+    font-weight: bolder;
 
     @container globalheader (width <= 940px) {
       grid-row: 1 / 2;
