@@ -16,17 +16,21 @@ const { pathname } = Astro.url
 <nav {...attrs}>
   <ul class="list">
     {
-      listItems.map((listItem) => (
-        <li class="listitem">
-          <a
-            class="listitem-link"
-            href={listItem.href}
-            data-is-current={listItem.href === pathname ? 'true' : 'false'}
-          >
-            {listItem.label}
-          </a>
-        </li>
-      ))
+      listItems.map((listItem) => {
+        return (
+          <li class="listitem">
+            {pathname === listItem.href ? (
+              <a class="listitem-link" href={listItem.href} aria-current="page">
+                {listItem.label}
+              </a>
+            ) : (
+              <a class="listitem-link" href={listItem.href}>
+                {listItem.label}
+              </a>
+            )}
+          </li>
+        )
+      })
     }
   </ul>
 </nav>
@@ -52,7 +56,7 @@ const { pathname } = Astro.url
       color: var(--link-color);
     }
 
-    &[data-is-current='true'] {
+    &[aria-current='page'] {
       color: var(--link-color);
       pointer-events: none;
     }
