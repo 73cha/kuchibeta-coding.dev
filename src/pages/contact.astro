@@ -1,0 +1,235 @@
+---
+import Layout from '@layouts/Layout.astro'
+import Breadcrumbs from '@components/Breadcrumbs.astro'
+import Container from '@components/Container.astro'
+import Hero from '@components/Hero.astro'
+import Section from '@components/Section.astro'
+
+const title = 'お問い合わせ'
+const description = '何かありましたら、お気軽にお問い合わせください。'
+const ssgFormUrl = import.meta.env.PUBLIC_SSGFORM_URL
+const reCaptchaKey = import.meta.env.PUBLIC_RECAPTCHA_KEY
+---
+
+<Layout
+  title={title}
+  description={description}
+  seo={{
+    url: '/contact',
+    publishedAt: '2025-03-31',
+    schemaType: 'WebPage',
+  }}
+>
+  <Hero style="margin-block-end: -1px;">
+    <Fragment slot="title">{title}</Fragment>
+    <Fragment slot="subTitle">
+      {description}
+    </Fragment>
+  </Hero>
+  <Container>
+    <Section class="contact-pp">
+      <h2>プライバシーポリシー</h2>
+      <Fragment slot="content">
+        <p>
+          当ウェブサイトの問い合わせフォームにご記入いただいた情報は、
+          お問い合わせに対応するためのみに使用いたします。
+          ご提供いただいた個人情報は、以下のように取り扱います。
+        </p>
+
+        <h3>収集する情報</h3>
+        <p>
+          氏名、メールアドレス、その他お問い合わせ内容に関連する情報を収集します。
+        </p>
+
+        <h3>利用目的</h3>
+        <p>
+          ご提供いただいた情報は、お問い合わせに対する回答のために使用します。その他の目的で利用することはありません。
+        </p>
+
+        <h3>第三者への提供</h3>
+        <p>
+          ご提供いただいた情報は、法律に基づく要求がある場合を除き、第三者には提供しません。
+        </p>
+
+        <h3>情報の保存期間</h3>
+        <p>
+          お問い合わせ内容の確認および対応後、個人情報は速やかに削除いたします。ただし、法的義務に基づく保存が必要な場合は、その期間中保存されることがあります。
+        </p>
+
+        <h3>安全管理</h3>
+        <p>
+          ご提供いただいた個人情報は、適切な管理を行い、
+          不正アクセスや漏洩を防ぐための対策を講じています。
+        </p>
+
+        <h3>お問合せについて</h3>
+        <p>
+          ご自身の個人情報に関する確認、訂正、削除を希望される場合は、
+          <a href="mailto:katsuhisa.namizaki@gmail.com"> こちら </a>
+          までご連絡ください。
+        </p>
+      </Fragment>
+    </Section>
+    <Section>
+      <h2>お問い合わせフォーム</h2>
+      <Fragment slot="content">
+        <p>
+          ご連絡をいただいてから、通常3営業日以内に返信します。
+          3営業日以内に連絡無き場合、大変お手数ですが再度お問い合わせください。
+        </p>
+
+        <p class="contact-form-notice">
+          <strong>
+            確認画面はありませんので、送信前にご確認をお願いいたします。
+          </strong>
+        </p>
+
+        <form class="contact-form" action={ssgFormUrl} method="POST">
+          <div class="contact-form-item">
+            <div class="contact-form-item-label">
+              <div class="contact-form-item-required">必須</div>
+              <label for="name">お名前</label>
+            </div>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              autocomplete="name"
+              required
+            />
+            <small class="contact-form-item-example">入力例: 山田 太郎</small>
+          </div>
+
+          <div class="contact-form-item">
+            <div class="contact-form-item-label">
+              <div class="contact-form-item-required">必須</div>
+              <label for="email">メールアドレス</label>
+            </div>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+            />
+            <small class="contact-form-item-example">
+              入力例: example@example.com
+            </small>
+          </div>
+
+          <div class="contact-form-item">
+            <div class="contact-form-item-label">
+              <div class="contact-form-item-required">必須</div>
+              <label for="body">お問い合わせ内容</label>
+            </div>
+            <textarea id="body" name="body" required></textarea>
+          </div>
+
+          <div class="contact-form-item">
+            <div class="g-recaptcha" data-sitekey={reCaptchaKey}></div>
+          </div>
+
+          <div class="contact-form-item">
+            <div class="contact-form-button-wrap">
+              <button class="contact-form-button" type="submit">
+                送信する
+              </button>
+            </div>
+          </div>
+        </form>
+      </Fragment>
+    </Section>
+  </Container>
+  <Breadcrumbs title={title} />
+</Layout>
+
+<style>
+  .contact-pp :where(* + *) {
+    margin-block-start: 2rem;
+  }
+
+  .contact-pp :where(h3 + *) {
+    margin-block-start: 0.5rem;
+  }
+
+  .contact-form {
+    margin-block-start: 3rem;
+  }
+
+  .contact-form :where(:is(input[type='text'], input[type='email'], textarea)) {
+    inline-size: 100%;
+    padding: 1rem;
+    margin-block-start: 1rem;
+    background-color: unset;
+    border: var(--border-style);
+
+    &:focus-visible {
+      background-color: var(--hero-background-color);
+    }
+  }
+
+  .contact-form-item {
+    margin-block-start: 2rem;
+  }
+
+  .contact-form-item-label {
+    display: block grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 0.5rem;
+    align-items: center;
+  }
+
+  .contact-form-item-required {
+    --clamp-min: 12;
+    --clamp-max: 12;
+
+    padding-inline: 0.5rem;
+    color: var(--is-light, var(--c-white)) var(--is-dark, var(--c-black));
+    letter-spacing: var(--_letter-spacing);
+    background-color: var(--is-light, var(--c-black))
+      var(--is-dark, var(--c-white));
+    border-radius: var(--radius-round);
+  }
+
+  .contact-form-item-example {
+    --clamp-max: 14;
+
+    color: var(--font-color-muted);
+  }
+
+  .contact-form-notice {
+    margin-block-start: 2rem;
+  }
+
+  .contact-form-button-wrap {
+    margin-block-end: -2rem;
+    margin-inline: -2rem -2rem;
+    border-block-start: var(--border-style);
+
+    @container main (inline-size <= 430px) {
+      margin-block-end: -1rem;
+      margin-inline: -1rem -1rem;
+    }
+  }
+
+  .contact-form-button {
+    box-sizing: border-box;
+    display: block;
+    inline-size: 100%;
+    padding: 1.5rem;
+    appearance: none;
+    background-color: unset;
+
+    &:focus-visible {
+      background-color: var(--hero-background-color);
+    }
+
+    @media (any-hover: hover) {
+      &:hover {
+        background-color: var(--hero-background-color);
+      }
+    }
+  }
+</style>
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>

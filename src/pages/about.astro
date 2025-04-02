@@ -1,0 +1,38 @@
+---
+import Layout from '@layouts/Layout.astro'
+import Breadcrumbs from '@components/Breadcrumbs.astro'
+import Container from '@components/Container.astro'
+import Hero from '@components/Hero.astro'
+import Intro from '@partials/about/Intro.astro'
+import Career from '@partials/about/Career.astro'
+import Skills from '@partials/about/Skills.astro'
+import Results from '@partials/about/Results.astro'
+
+const title = '私について'
+const description =
+  '私、浪崎勝久についてです。職歴や実績、スキルなどを載せています。'
+---
+
+<Layout
+  title={title}
+  description={description}
+  seo={{
+    url: '/about',
+    publishedAt: '2025-03-31',
+    schemaType: 'WebPage',
+  }}
+>
+  <Hero style="margin-block-end: -1px;">
+    <Fragment slot="title">{title}</Fragment>
+    <Fragment slot="subTitle">
+      {description}
+    </Fragment>
+  </Hero>
+  <Container>
+    <Intro />
+    <Career />
+    <Skills />
+    <Results />
+  </Container>
+  <Breadcrumbs title={title} />
+</Layout>
