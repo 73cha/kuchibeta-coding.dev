@@ -1,0 +1,43 @@
+---
+const { ...attrs } = Astro.props
+---
+
+<div class="hero" {...attrs}>
+  <slot name="date" />
+  <h1 class="hero-title">
+    <slot name="title" />
+  </h1>
+  <p class="hero-subTitle">
+    <slot name="subTitle" />
+  </p>
+  <slot name="tags" />
+</div>
+
+<style>
+  .hero {
+    padding-block: 8rem;
+    background-color: var(--hero-background-color);
+    border-block-end: var(--border-style);
+
+    @container main (width <= 940px) {
+      padding-block: 3rem;
+      padding-inline: 1rem;
+    }
+  }
+
+  :is(.hero-title, .hero-subTitle) {
+    inline-size: fit-content;
+    margin-inline: auto;
+  }
+
+  .hero-title {
+    --clamp-min: 20;
+    --clamp-max: 32;
+
+    font-weight: bolder;
+  }
+
+  .hero-subTitle {
+    margin-block-start: 1rem;
+  }
+</style>
