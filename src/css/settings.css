@@ -29,4 +29,5 @@
   --header-block-size: 60px;
   --leading-trim: calc((1em - 1lh) / 2);
   --border-style: solid 1px var(--border-color);
+  --radius-round: calc(infinity * 1px);
 }

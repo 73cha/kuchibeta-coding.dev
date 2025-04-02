@@ -25,7 +25,7 @@
       var(--hero-grid-color) calc(100% - 1px)
     );
   background-repeat: repeat;
-  background-position: center center;
+  background-position: left top;
   background-size: 1rem 1rem;
 }
 
