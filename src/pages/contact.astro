@@ -61,13 +61,6 @@ const reCaptchaKey = import.meta.env.PUBLIC_RECAPTCHA_KEY
           ご提供いただいた個人情報は、適切な管理を行い、
           不正アクセスや漏洩を防ぐための対策を講じています。
         </p>
-
-        <h3>お問合せについて</h3>
-        <p>
-          ご自身の個人情報に関する確認、訂正、削除を希望される場合は、
-          <a href="mailto:katsuhisa.namizaki@gmail.com"> こちら </a>
-          までご連絡ください。
-        </p>
       </Fragment>
     </Section>
     <Section>
@@ -149,7 +142,7 @@ const reCaptchaKey = import.meta.env.PUBLIC_RECAPTCHA_KEY
   }
 
   .contact-pp :where(h3 + *) {
-    margin-block-start: 0.5rem;
+    margin-block-start: 1rem;
   }
 
   .contact-form {
@@ -233,3 +226,24 @@ const reCaptchaKey = import.meta.env.PUBLIC_RECAPTCHA_KEY
 </style>
 
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script>
+  const initializeSubmit = () => {
+    const form = document.querySelector<HTMLFormElement>('.contact-form')
+
+    if (!form) {
+      console.warn('Contact form is not found.')
+      return
+    }
+
+    form.addEventListener('submit', (event) => {
+      if (window.grecaptcha.getResponse() === '') {
+        event.preventDefault()
+        window.alert(
+          'reCAPTCHAをチェックして、チャレンジを成功させてから送信ください。'
+        )
+      }
+    })
+  }
+
+  document.addEventListener('DOMContentLoaded', initializeSubmit)
+</script>
