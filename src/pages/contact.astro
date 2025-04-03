@@ -227,7 +227,7 @@ const reCaptchaKey = import.meta.env.PUBLIC_RECAPTCHA_KEY
 
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script>
-  const initializeSubmit = () => {
+  ;(() => {
     const form = document.querySelector<HTMLFormElement>('.contact-form')
 
     if (!form) {
@@ -243,7 +243,5 @@ const reCaptchaKey = import.meta.env.PUBLIC_RECAPTCHA_KEY
         )
       }
     })
-  }
-
-  document.addEventListener('DOMContentLoaded', initializeSubmit)
+  })()
 </script>
